@@ -9,16 +9,17 @@ ruleset com.vcpnews.introspect {
   global {
     introspect = function(_headers){
       subs_count = subs:established().length()
+      relateURL = "https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/krl/byu.hr.relate.krl"
       html:header("manage introspections","",null,null,_headers)
       + <<
 <h1>Manage introspections</h1>
 <h2>Overview</h2>
-<p>Your pico is named #{wrangler:name()}</p>
-<p>Its parent pico is named #{wrangler:picoQuery(wrangler:parent_eci(),"io.picolabs.wrangler","name")}</p>
-<p>It has #{wrangler:installedRIDs().length()} rulesets</p>
-<p>It has #{wrangler:channels().length()} channels</p>
-<p>It has #{subs_count} subscription#{subs_count==1 => "" | "s"}
-These can be managed with the <a href="https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/krl/byu.hr.relate.krl"><code>byu.hr.relate</code> app</a></p>
+<p>Your pico is named #{wrangler:name()}.</p>
+<p>Its parent pico is named #{wrangler:picoQuery(wrangler:parent_eci(),"io.picolabs.wrangler","name")}.</p>
+<p>It has #{wrangler:installedRIDs().length()} rulesets.</p>
+<p>It has #{wrangler:channels().length()} channels.</p>
+<p>It has #{subs_count} subscription#{subs_count==1 => "" | "s"}.
+These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code></a> app.</p>
 <h2>Technical</h2>
 <button disabled title="not yet implemented">export</button>
 >>
