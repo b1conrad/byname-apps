@@ -10,13 +10,19 @@ ruleset com.vcpnews.introspect {
     introspect = function(_headers){
       subs_count = subs:established().length()
       relateURL = "https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/krl/byu.hr.relate.krl"
+      manage_appsURL = "https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/krl/byu.hr.manage_apps.krl"
+      pECI = wrangler:parent_eci()
+      pName = pECI.isnull() => null | wrangler:picoQuery(pECI,"io.picolabs.wrangler","name")
       html:header("manage introspections","",null,null,_headers)
+      apps = html:cookies(_headers){"apps"}.split(",")
       + <<
 <h1>Manage introspections</h1>
 <h2>Overview</h2>
-<p>Your pico is named #{wrangler:name()}.</p>
-<p>Its parent pico is named #{wrangler:picoQuery(wrangler:parent_eci(),"io.picolabs.wrangler","name")}.</p>
-<p>It has #{wrangler:installedRIDs().length()} rulesets.</p>
+<p>Your pico is named #{wrangler:name()}#{
+  pName => " and its parent pico is named #{pName}." | "."}</p>
+<p>It has #{wrangler:installedRIDs().length()} rulesets#{
+  apps.length() => <<, of which #{apps.length()} are apps.
+These can be managed with the <a href="#{manage_appsURL}"><code>byu.hr.manage_apps</code></a>.>> | "."}</p>
 <p>It has #{wrangler:channels().length()} channels.</p>
 <p>It has #{subs_count} subscription#{subs_count==1 => "" | "s"}.
 These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code></a> app.</p>
