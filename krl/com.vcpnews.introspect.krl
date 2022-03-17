@@ -22,7 +22,7 @@ ruleset com.vcpnews.introspect {
   pName => " and its parent pico is named #{pName}." | "."}</p>
 <p>It has #{wrangler:installedRIDs().length()} rulesets#{
   apps.length() => <<, of which #{apps.length()} are apps.
-These can be managed with the <a href="#{manage_appsURL}"><code>byu.hr.manage_apps</code></a>.>> | "."}</p>
+These can be managed with the <a href="#{manage_appsURL}"><code>byu.hr.manage_apps</code></a> app.>> | "."}</p>
 <p>It has #{wrangler:channels().length()} channels.</p>
 <p>It has #{subs_count} subscription#{subs_count==1 => "" | "s"}.
 These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code></a> app.</p>
