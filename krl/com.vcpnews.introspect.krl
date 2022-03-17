@@ -2,11 +2,13 @@ ruleset com.vcpnews.introspect {
   meta {
     name "introspections"
     use module io.picolabs.wrangler alias wrangler
+    use module io.picolabs.subscription alias subs
     use module html.byu alias html
     shares introspect
   }
   global {
     introspect = function(_headers){
+      subs_count = subs:established().length()
       html:header("manage introspections","",null,null,_headers)
       + <<
 <h1>Manage introspections</h1>
@@ -14,6 +16,7 @@ ruleset com.vcpnews.introspect {
 <p>Its parent pico is named #{wrangler:picoQuery(wrangler:parent_eci(),"io.picolabs.wrangler","name")}</p>
 <p>It has #{wrangler:installedRIDs().length()} rulesets</p>
 <p>It has #{wrangler:channels().length()} channels</p>
+<p>It has #{subs_count} subscription#{subs_count==1 => "" | "s"}</p>
 >>
       + html:footer()
     }
