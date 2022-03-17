@@ -13,8 +13,8 @@ ruleset com.vcpnews.introspect {
       manage_appsURL = "https://raw.githubusercontent.com/Picolab/fully-sharded-database/main/krl/byu.hr.manage_apps.krl"
       pECI = wrangler:parent_eci()
       pName = pECI.isnull() => null | wrangler:picoQuery(pECI,"io.picolabs.wrangler","name")
-      html:header("manage introspections","",null,null,_headers)
       apps = html:cookies(_headers){"apps"}.split(",")
+      html:header("manage introspections","",null,null,_headers)
       + <<
 <h1>Manage introspections</h1>
 <h2>Overview</h2>
