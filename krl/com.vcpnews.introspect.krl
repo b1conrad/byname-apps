@@ -19,7 +19,7 @@ ruleset com.vcpnews.introspect {
 <h1>Manage introspections</h1>
 <h2>Overview</h2>
 <p>Your pico is named #{wrangler:name()}#{
-  pName => " and its parent pico is named #{pName}." | "."}</p>
+  pName => << and its parent pico is named #{pName}.>> | "."}</p>
 <p>It has #{wrangler:installedRIDs().length()} rulesets#{
   apps.length() => <<, of which #{apps.length()} are apps.
 These can be managed with the <a href="#{manage_appsURL}"><code>byu.hr.manage_apps</code></a> app.>> | "."}</p>
