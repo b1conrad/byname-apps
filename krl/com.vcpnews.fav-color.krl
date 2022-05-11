@@ -1,6 +1,6 @@
 ruleset com.vcpnews.fav-color {
   meta {
-    name "Favorite Color"
+    name "fav-color"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
     shares index
