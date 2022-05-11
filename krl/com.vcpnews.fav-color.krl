@@ -1,6 +1,6 @@
 ruleset com.vcpnews.fav-color {
   meta {
-    name "fav-color"
+    name "Favorite Color"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
     shares index
@@ -10,6 +10,12 @@ ruleset com.vcpnews.fav-color {
       html:header("Manage Favorite Color","",null,null,_headers)
       + <<
 <h1>Manage Favorite Color</h1>
+<form>
+Favorite color: <select name="fav_color">
+</select>
+<br>
+<button type="submit">Submit</button>
+</form>
 >>
       + html:footer()
     }
