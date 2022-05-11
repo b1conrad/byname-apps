@@ -10,6 +10,10 @@ ruleset com.vcpnews.fav-color {
       html:header("Manage Favorite Color","",null,null,_headers)
       + <<
 <h1>Manage Favorite Color</h1>
+#{ent:colorname => <<<p>Your favorite color is #{ent:colorname}.
+Here is a swatch:</p>
+<div id="swatch" style="background-color:##{ent:colorcode}"></div>
+>> | ""}
 <form>
 Favorite color: <select name="fav_color">
 </select>
