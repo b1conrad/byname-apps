@@ -12,11 +12,20 @@ ruleset com.vcpnews.fav-color {
 <h1>Manage Favorite Color</h1>
 #{ent:colorname => <<<p>Your favorite color:</p>
 <table>
-<tr>
-<td style="text-align:center"><code>#{ent:colorname}</code></td>
-<td><code>#{ent:colorcode}</code></td>
-<td style="background-color:#{ent:colorname}"></td>
-</tr>
+  <thead>
+    <tr>
+      <th scope="col">Keyword</th>
+      <th scope="col">RGB hex value</th>
+      <th scope="col">Live keyword</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align:center"><code>#{ent:colorname}</code></td>
+      <td><code>#{ent:colorcode}</code></td>
+      <td style="background-color:#{ent:colorname}"></td>
+    </tr>
+  </tbody>
 </table>
 >> | ""}<hr>
 <form>
