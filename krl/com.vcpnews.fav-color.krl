@@ -10,10 +10,15 @@ ruleset com.vcpnews.fav-color {
       html:header("Manage Favorite Color","",null,null,_headers)
       + <<
 <h1>Manage Favorite Color</h1>
-#{ent:colorname => <<<p>Your favorite color is #{ent:colorname}.
-Here is a swatch:</p>
-<div id="swatch" style="background-color:##{ent:colorcode}"></div>
->> | ""}
+#{ent:colorname => <<<p>Your favorite color:</p>
+<table>
+<tr>
+<td style="text-align:center"><code>#{ent:colorname}</code></td>
+<td><code>#{ent:colorcode}</code></td>
+<td style="background-color:#{ent:colorname}"></td>
+</tr>
+</table>
+>> | ""}<hr>
 <form>
 Favorite color: <select name="fav_color">
 </select>
@@ -41,5 +46,12 @@ Favorite color: <select name="fav_color">
     select when fav_color factory_reset
     foreach wrangler:channels("fav-color").reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
+  }
+  rule initialValues {
+    select when fav_color factory_reset
+    fired {
+      ent:colorname := "wheat"
+      ent:colorcode := "#f5deb3"
+    }
   }
 }
