@@ -1,6 +1,9 @@
 ruleset css3colors {
   meta {
-    provides options, hex2name
+    description <<
+      scraped from https://developer.mozilla.org/en-US/docs/Web/CSS/color_value/color_keywords May 11, 2022
+    >>
+    provides colormap, options
   }
   global {
     colormap = {
