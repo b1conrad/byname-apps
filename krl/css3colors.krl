@@ -138,9 +138,10 @@ ruleset css3colors {
       "whitesmoke": "#f5f5f5",
       "yellowgreen": "#9acd32",
     }
-    options = function(){
+    options = function(indent){
+      left_margin = indent
       gen_option = function(v,k){
-        <<<option value="#{v}">#{k}</option>
+        <<#{left_margin}<option value="#{v}">#{k}</option>
 >>
       }
       colormap.map(gen_option).values().join("")
