@@ -33,16 +33,16 @@ ruleset com.vcpnews.fav-color {
 >>}<hr>
 <form action="#{url}" method="POST">
 Favorite color: <select name="fav_color">
-#{options("  ")}</select>
+#{options("  ",ent:colorname)}</select>
 <button type="submit">Select</button>
 </form>
 >>
       + html:footer()
     }
-    options = function(indent){ // use from colors module when available
-      left_margin = indent
+    options = function(indent,default){ // use from colors module when available
+      left_margin = indent || ""
       gen_option = function(v,k){
-        <<#{left_margin}<option value="#{v}">#{k}</option>
+        <<#{left_margin}<option value="#{v}"#{k==default => " selected" | ""}>#{k}</option>
 >>
       }
       colormap.map(gen_option).values().join("")
