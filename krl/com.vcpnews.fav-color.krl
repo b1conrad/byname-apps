@@ -12,12 +12,12 @@ ruleset com.vcpnews.fav-color {
       + <<
 <h1>Manage Favorite Color</h1>
 #{ent:colorname => <<<p>Your favorite color:</p>
-<table>
+<table style="background-color:white">
   <thead>
     <tr>
-      <th scope="col">Keyword</th>
-      <th scope="col">RGB hex value</th>
-      <th scope="col">Live keyword</th>
+      <th scope="col">Name</th>
+      <th scope="col">RGB hex</th>
+      <th scope="col">Swatch</th>
     </tr>
   </thead>
   <tbody>
