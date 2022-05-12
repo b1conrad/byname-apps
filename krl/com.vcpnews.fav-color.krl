@@ -8,6 +8,7 @@ ruleset com.vcpnews.fav-color {
   }
   global {
     index = function(_headers){
+      url = <<#{meta:host}/sky/event/#{meta:eci}/selectcolor/fav_color/fav_color_selected>>
       html:header("Manage Favorite Color","",null,null,_headers)
       + <<
 <h1>Manage Favorite Color</h1>
@@ -28,12 +29,12 @@ ruleset com.vcpnews.fav-color {
     </tr>
   </tbody>
 </table>
->> | ""}<hr>
-<form>
+>> | <<<p>You have not yet selected a favorite color.</p>
+>>}<hr>
+<form action="#{url}" method="POST">
 Favorite color: <select name="fav_color">
 #{options("  ")}</select>
-<br>
-<button type="submit">Submit</button>
+<button type="submit">Select</button>
 </form>
 >>
       + html:footer()
@@ -197,11 +198,15 @@ Favorite color: <select name="fav_color">
     foreach wrangler:channels("fav-color").reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
-  rule initialValues {
-    select when fav_color factory_reset
+  rule recordFavColor {
+    select when fav_color fav_color_selected
+      fav_color re#^(\#[a-f0-9]{6})$# setting(fav_color)
+    pre {
+      colorname = colormap.filter(function(v){v==fav_color}).keys().head()
+    }
     fired {
-      ent:colorname := "wheat"
-      ent:colorcode := "#f5deb3"
+      ent:colorname := colorname
+      ent:colorcode := fav_color
     }
   }
 }
