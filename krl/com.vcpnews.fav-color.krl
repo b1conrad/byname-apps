@@ -209,4 +209,11 @@ Favorite color: <select name="fav_color">
       ent:colorcode := fav_color
     }
   }
+  rule redirectBack {
+    select when fav_color fav_color_selected
+    pre {
+      referrer = event:attr("_headers").get("referer") // sic
+    }
+    if referrer then send_directive("_redirect",{"url":referrer})
+  }
 }
