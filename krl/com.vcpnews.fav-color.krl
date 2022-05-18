@@ -25,7 +25,7 @@ ruleset com.vcpnews.fav-color {
     <tr>
       <td style="text-align:center"><code>#{ent:colorname}</code></td>
       <td><code>#{ent:colorcode}</code></td>
-      <td style="background-color:#{ent:colorname}"></td>
+      <td style="background-color:#{ent:colorcode}"></td>
     </tr>
   </tbody>
 </table>
@@ -203,10 +203,15 @@ Favorite color: <select name="fav_color">
       fav_color re#^(\#[a-f0-9]{6})$# setting(fav_color)
     pre {
       colorname = colormap.filter(function(v){v==fav_color}).keys().head()
+        || "unknown"
     }
     fired {
       ent:colorname := colorname
       ent:colorcode := fav_color
+      raise fav_color event "fav_color_recorded" attributes {
+        "colorcode":fav_color,
+        "colorname":colorname,
+      }
     }
   }
   rule redirectBack {
