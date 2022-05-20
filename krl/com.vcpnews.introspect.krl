@@ -33,13 +33,17 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       + html:footer()
     }
     rulesets = function(_headers){
+      pf = re#^file:///usr/local/lib/node_modules/#
+      pu = "https://raw.githubusercontent.com/Picolab/pico-engine/master/packages/"
       sort_key = ["meta","flushed"]
       one_ruleset = function(rs){
+        rid = rs{"rid"}
         flushed_time = rs{sort_key}
+        url = rs{"url"}.replace(pf,pu)
         <<<tr>
-<td>#{rs{"rid"}}</td>
+rtd>#{rid}</td>
 <td>#{flushed_time.encode()}</td>
-<td><a href="#{rs{"url"}}">#{rs{"url"}}</a></td>
+<td><a href="#{url}">#{url}</a></td>
 </tr>
 >>
       }
