@@ -33,6 +33,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       + html:footer()
     }
     rulesets = function(_headers){
+      apps = html:cookies(_headers){"apps"}.split(",")
       pf = re#^file:///usr/local/lib/node_modules/#
       pu = "https://raw.githubusercontent.com/Picolab/pico-engine/master/packages/"
       sort_key = ["meta","flushed"]
@@ -42,6 +43,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
         url = rs{"url"}.replace(pf,pu)
         <<<tr>
 <td>#{rid}</td>
+<td>#{apps >< rid => "app" | ""}</td>
 <td>#{flushed_time.encode()}</td>
 <td><a href="#{url}">#{url}</a></td>
 </tr>
