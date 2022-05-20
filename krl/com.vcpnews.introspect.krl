@@ -33,8 +33,14 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       + html:footer()
     }
     rulesets = function(_headers){
+      one_ruleset = function(rs){
+        <<<li>#{rs{"rid"}}</li>
+>>
+      }
       html:header("Your rulesets","",null,null,_headers)
       + <<<h1>Your rulesets</h1>
+<ul>
+#{ctx:rulesets.map(one_ruleset).join("")}</ul>
 >>
       + html:footer()
     }
