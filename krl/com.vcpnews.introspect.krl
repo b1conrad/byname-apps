@@ -34,8 +34,11 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
     }
     rulesets = function(_headers){
       one_ruleset = function(rs){
-        <<<li>#{rs{"rid"}}</li>
+        <<<li>#{rs{"rid"}}: #{rs{"flushed"}}</li>
 >>
+      }
+      by = function(key){
+        function(a,b){a{key} cmp b{key}}
       }
       by_flushed = function(a,b){
         a{"flushed"} cmp b{"flushed"}
