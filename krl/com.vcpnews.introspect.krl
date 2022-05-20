@@ -37,10 +37,13 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
         <<<li>#{rs{"rid"}}</li>
 >>
       }
+      by_flushed = function(a,b){
+        a{"flushed"} cmp b{"flushed"}
+      }
       html:header("Your rulesets","",null,null,_headers)
       + <<<h1>Your rulesets</h1>
 <ul>
-#{ctx:rulesets.map(one_ruleset).join("")}</ul>
+#{ctx:rulesets.sort(by_flushed).map(one_ruleset).join("")}</ul>
 >>
       + html:footer()
     }
