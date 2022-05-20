@@ -35,9 +35,10 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
     rulesets = function(_headers){
       sort_key = ["meta","flushed"]
       one_ruleset = function(rs){
+        flushed_time = rs{sort_key}.klog("flushed")
         <<<tr>
 <td>#{rs{"rid"}.klog("rid")}</td>
-<td>#{rs{sort_key}.klog("flushed")}</td>
+<td>#{flushed_time.encode()}</td>
 </tr>
 >>.klog("row")
       }
