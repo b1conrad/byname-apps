@@ -35,12 +35,13 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
     rulesets = function(_headers){
       sort_key = ["meta","flushed"]
       one_ruleset = function(rs){
-        flushed_time = rs{sort_key}.klog("flushed")
+        flushed_time = rs{sort_key}
         <<<tr>
-<td>#{rs{"rid"}.klog("rid")}</td>
+<td>#{rs{"rid"}}</td>
 <td>#{flushed_time.encode()}</td>
+<td><a href="#{rs{"url"}}">#{rs{"url"}}</a></td>
 </tr>
->>.klog("row")
+>>
       }
       by = function(key){
         function(a,b){a{key} cmp b{key}}
