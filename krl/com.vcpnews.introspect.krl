@@ -40,6 +40,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       one_ruleset = function(rs){
         rid = rs{"rid"}
         flushed_time = rs{sort_key}
+debug = typeof(flushed_time) == "Map" => flushed_time.keys().klog("debug") | ""
         url = rs{"url"}.replace(pf,pu)
         <<<tr>
 <td>#{rid}</td>
@@ -60,10 +61,10 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       + html:footer()
     }
     makeMT = function(ts){
-      to = ts.typeof().klog("to")
+      to = ts.typeof()
       tts = to == "String" => ts |
             to == "Map" => ts.encode().decode() |
-            ts.klog("ts")
+            ts
       MST = time:add(tts,{"hours": -7});
       MDT = time:add(tts,{"hours": -6});
       MDT > "2022-11-06T02" => MST |
