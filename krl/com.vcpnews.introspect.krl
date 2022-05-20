@@ -33,8 +33,9 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       + html:footer()
     }
     rulesets = function(_headers){
+      sort_key = ["meta","flushed"]
       one_ruleset = function(rs){
-        <<<li>#{rs{"rid"}}: #{rs{"flushed"}}</li>
+        <<<li>#{rs{"rid"}}: #{rs{sort_key}}</li>
 >>
       }
       by = function(key){
@@ -46,7 +47,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       html:header("Your rulesets","",null,null,_headers)
       + <<<h1>Your rulesets</h1>
 <ul>
-#{ctx:rulesets.sort(by_flushed).map(one_ruleset).join("")}</ul>
+#{ctx:rulesets.sort(by(sort_key)).map(one_ruleset).join("")}</ul>
 >>
       + html:footer()
     }
