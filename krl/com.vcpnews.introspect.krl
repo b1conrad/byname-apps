@@ -44,7 +44,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
         <<<tr>
 <td>#{rid}</td>
 <td>#{apps >< rid => "app" | ""}</td>
-<td>#{flushed_time.encode()}</td>
+<td>#{flushed_time.makeMT().ts_format()}</td>
 <td><a href="#{url}">#{url}</a></td>
 </tr>
 >>
@@ -58,6 +58,17 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 #{ctx:rulesets.sort(by(sort_key)).map(one_ruleset).join("")}</table>
 >>
       + html:footer()
+    }
+    makeMT = function(ts){
+      MST = time:add(ts,{"hours": -7});
+      MDT = time:add(ts,{"hours": -6});
+      MDT > "2022-11-06T02" => MST |
+      MST > "2022-03-13T02" => MDT |
+                               MST
+    }
+    ts_format = function(ts){
+      parts = ts.split(re#[T.]#)
+      parts.filter(function(v,i){i<2}).join(" ")
     }
   }
   rule initialize {
