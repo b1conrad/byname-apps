@@ -39,7 +39,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 <td>#{rs{"rid"}.klog("rid")}</td>
 <td>#{rs{sort_key}.klog("flushed")}</td>
 </tr>
->>
+>>.klog("row")
       }
       by = function(key){
         function(a,b){a{key} cmp b{key}}
