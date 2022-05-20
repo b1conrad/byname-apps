@@ -32,8 +32,8 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 >>
       + html:footer()
     }
-    rulesets = function(rid){
-      html:header("Your rulesets","")
+    rulesets = function(_headers){
+      html:header("Your rulesets","",null,null,_headers)
       + <<<h1>Your rulesets</h1>
 >>
       + html:footer()
