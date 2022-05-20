@@ -41,7 +41,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
         flushed_time = rs{sort_key}
         url = rs{"url"}.replace(pf,pu)
         <<<tr>
-rtd>#{rid}</td>
+<td>#{rid}</td>
 <td>#{flushed_time.encode()}</td>
 <td><a href="#{url}">#{url}</a></td>
 </tr>
