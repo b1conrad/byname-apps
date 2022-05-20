@@ -60,8 +60,12 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       + html:footer()
     }
     makeMT = function(ts){
-      MST = time:add(ts,{"hours": -7});
-      MDT = time:add(ts,{"hours": -6});
+      to = ts.typeof().klog("to")
+      tts = to == "String" => ts |
+            to == "Map" => ts.encode().decode() |
+            ts.klog("ts")
+      MST = time:add(tts,{"hours": -7});
+      MDT = time:add(tts,{"hours": -6});
       MDT > "2022-11-06T02" => MST |
       MST > "2022-03-13T02" => MDT |
                                MST
