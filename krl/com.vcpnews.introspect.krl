@@ -35,14 +35,11 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
     rulesets = function(_headers){
       sort_key = ["meta","flushed"]
       one_ruleset = function(rs){
-        <<<li>#{rs{"rid"}}: #{rs{sort_key}}</li>
+        <<<li>#{rs{"rid"}}: #{rs{sort_key}.klog("flushed")}</li>
 >>
       }
       by = function(key){
         function(a,b){a{key} cmp b{key}}
-      }
-      by_flushed = function(a,b){
-        a{"flushed"} cmp b{"flushed"}
       }
       html:header("Your rulesets","",null,null,_headers)
       + <<<h1>Your rulesets</h1>
