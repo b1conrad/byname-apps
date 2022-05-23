@@ -69,7 +69,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 <table>
 <tr>
 <td>Ruleset ID</td>
-<td>App?</td>
+<td>App</td>
 <td>Last flushed</td>
 <td>Source code</td>
 <td>Hash</td>
