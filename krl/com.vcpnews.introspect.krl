@@ -50,13 +50,13 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       one_ruleset = function(rs){
         rid = rs{"rid"}
         flushed_time = rs{sort_key}
-debug = typeof(flushed_time) == "Map" => flushed_time.keys().klog("debug") | ""
         url = rs{"url"}.replace(pf,pu)
+        meta_hash = rs{["meta","hash"]}
         <<<tr>
 <td>#{rid}</td>
 <td>#{apps >< rid => app_url(rid) | ""}</td>
 <td>#{flushed_time.makeMT().ts_format()}</td>
-<td><a href="#{url}">#{url}</a></td>
+<td><a href="#{url}" title="#{meta_hash}">#{url}</a></td>
 </tr>
 >>
       }
