@@ -34,6 +34,14 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
     }
     rulesets = function(_headers){
       apps = html:cookies(_headers){"apps"}.split(",")
+      app_url = function(rid){
+        rsMeta = wrangler:rulesetMeta(rid)
+        home = rsMeta.get("shares").head() + ".html"
+        tags = rid == "byu.hr.record" => "record_audio" | rsMeta.get("name")
+        eci = wrangler:channels(tags).head().get("id") || null
+        rid == meta:rid || eci.isnull() => home |
+        <<<a href="#{meta:host}/c/#{eci}/query/#{rid}/#{home}">#{home}</a> >>
+      }
       pf = re#^file:///usr/local/lib/node_modules/#
       pu = "https://raw.githubusercontent.com/Picolab/pico-engine/master/packages/"
       sort_key = ["meta","flushed"]
@@ -44,7 +52,7 @@ debug = typeof(flushed_time) == "Map" => flushed_time.keys().klog("debug") | ""
         url = rs{"url"}.replace(pf,pu)
         <<<tr>
 <td>#{rid}</td>
-<td>#{apps >< rid => "app" | ""}</td>
+<td>#{apps >< rid => app_url(rid) | ""}</td>
 <td>#{flushed_time.makeMT().ts_format()}</td>
 <td><a href="#{url}">#{url}</a></td>
 </tr>
