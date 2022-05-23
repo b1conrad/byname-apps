@@ -56,6 +56,12 @@ debug = typeof(flushed_time) == "Map" => flushed_time.keys().klog("debug") | ""
       html:header("Your rulesets","",null,null,_headers)
       + <<<h1>Your rulesets</h1>
 <table>
+<tr>
+<td>Ruleset ID</td>
+<td>App?</td>
+<td>Last flushed</td>
+<td>Source code</td>
+</tr>
 #{ctx:rulesets.sort(by(sort_key)).map(one_ruleset).join("")}</table>
 >>
       + html:footer()
