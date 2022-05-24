@@ -97,7 +97,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
     r_use_m_relation = function(){ // a set (an Array) of ordered pairs
       add_relations = function(set,rs){
         rid = rs{"rid"}
-        ops = rs{["meta","use"]}
+        ops = rs{["meta","krlMeta","use"]}
           .defaultsTo([])
           .filter(function(v){v{"kind"}=="module"})
           .map(function(u){[rid,u{"rid"}]})
