@@ -52,7 +52,8 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
         rid = rs{"rid"}
         module_xref = xref{rid}
         module_title = module_xref.length()==0 => ""
-          | << title="used as module by #{module_xref.encode()}">>
+          | << title="used as module by #{
+            module_xref.encode().replace(re#["]#g,"&quot;")}">>
         flushed_time = rs{sort_key}
         url = rs{"url"}.replace(pf,pu)
         meta_hash = rs{["meta","hash"]}
