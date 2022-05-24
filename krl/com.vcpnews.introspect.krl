@@ -33,6 +33,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       + html:footer()
     }
     rulesets = function(_headers){
+      xref = module_usage()
       apps = html:cookies(_headers){"apps"}.split(",")
       app_url = function(rid){
         rsMeta = wrangler:rulesetMeta(rid)
@@ -49,13 +50,16 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       sort_key = ["meta","flushed"]
       one_ruleset = function(rs){
         rid = rs{"rid"}
+        module_xref = xref{"rid"}
+        module_title = module_xref.length()==0 => ""
+          | << title="used as module by #{module_xref.encode()}">>
         flushed_time = rs{sort_key}
         url = rs{"url"}.replace(pf,pu)
         meta_hash = rs{["meta","hash"]}
         <<<tr>
-<td>#{rid}</td>
+<td#{module_title}>#{rid}</td>
 <td>#{apps >< rid => app_url(rid) | ""}</td>
-<td>#{flushed_time.makeMT().ts_format()}</td>
+<td title="#{flushed_time}">#{flushed_time.makeMT().ts_format()}</td>
 <td><a href="#{url}">#{url}</a></td>
 <td title="#{meta_hash}">#{meta_hash.substr(0,7)}</td>
 </tr>
@@ -76,7 +80,6 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 </tr>
 #{ctx:rulesets.sort(by(sort_key)).map(one_ruleset).join("")}</table>
 >>
-      + module_usage().encode()
       + html:footer()
     }
     makeMT = function(ts){
