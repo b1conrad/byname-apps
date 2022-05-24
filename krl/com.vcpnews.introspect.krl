@@ -76,7 +76,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 </tr>
 #{ctx:rulesets.sort(by(sort_key)).map(one_ruleset).join("")}</table>
 >>
-      + modules_used().encode()
+      + r_use_m_relation().encode()
       + html:footer()
     }
     makeMT = function(ts){
@@ -93,6 +93,18 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
     ts_format = function(ts){
       parts = ts.split(re#[T.]#)
       parts.filter(function(v,i){i<2}).join(" ")
+    }
+    r_use_m_relation = function(){ // a set (an Array) of ordered pairs
+      add_relations = function(set,rs){
+        rid = rs{"rid"}
+        ops = rs{["meta","use"]}
+          .defaultsTo([])
+          .filter(function(v){v{"kind"}=="module"})
+          .map(function(u){[rid,u{"rid"}]})
+        set.append(ops)
+      }
+      ctx:rulesets
+        .reduce(add_relations,[])
     }
     modules_used = function(){
       // a Map of Arrays; key is using RID; value is array of modules used
