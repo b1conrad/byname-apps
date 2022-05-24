@@ -76,7 +76,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 </tr>
 #{ctx:rulesets.sort(by(sort_key)).map(one_ruleset).join("")}</table>
 >>
-      + r_use_m_relation().encode()
+      + module_usage().encode()
       + html:footer()
     }
     makeMT = function(ts){
