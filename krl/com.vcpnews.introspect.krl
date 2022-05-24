@@ -76,6 +76,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 </tr>
 #{ctx:rulesets.sort(by(sort_key)).map(one_ruleset).join("")}</table>
 >>
+      + modules_used.encode()
       + html:footer()
     }
     makeMT = function(ts){
@@ -92,6 +93,21 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
     ts_format = function(ts){
       parts = ts.split(re#[T.]#)
       parts.filter(function(v,i){i<2}).join(" ")
+    }
+    modules_used = function(){
+      // a Map of Arrays; key is using RID; value is array of modules used
+      make_list = function(an_array,module_usage){
+        an_array.append(module_usage{"rid"})
+      }
+      find_usages = function(a_map,rs){
+        rid = rs{"rid"}
+        uses = wrangler:rulesetMeta(rid){"use"} // an Array of Maps
+          .filter(function(v){v{"kind"}=="module"})
+          .reduce(make_list,[]) // an Array of Strings
+        a_map.put(rid,uses)
+      }
+      ctx:rulesets // an Array of Maps
+        .reduce(find_usages,{})
     }
   }
   rule initialize {
