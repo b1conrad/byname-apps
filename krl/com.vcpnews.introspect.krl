@@ -103,9 +103,10 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
         rid = rs{"rid"}
 .klog("rid")
         uses = wrangler:rulesetMeta(rid){"use"} // an Array of Maps
-.klog("uses")
+          .defaultsTo([])
           .filter(function(v){v{"kind"}=="module"})
           .reduce(make_list,[]) // an Array of Strings
+.klog("uses")
         a_map.put(rid,uses)
       }
       ctx:rulesets // an Array of Maps
