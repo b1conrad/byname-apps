@@ -50,7 +50,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       sort_key = ["meta","flushed"]
       one_ruleset = function(rs){
         rid = rs{"rid"}
-        module_xref = xref{"rid"}
+        module_xref = xref{rid}
         module_title = module_xref.length()==0 => ""
           | << title="used as module by #{module_xref.encode()}">>
         flushed_time = rs{sort_key}
