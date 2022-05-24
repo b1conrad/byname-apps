@@ -106,6 +106,15 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       ctx:rulesets
         .reduce(add_relations,[])
     }
+    module_usage = function(){
+      xref = function(amap,op){
+        r = op.head()
+        m = op[1]
+        amap.put(m,amap.get(m).defaultsTo([]).append(r))
+      }
+      r_use_m_relation() // set of (rid,module) ordered pairs
+        .reduce(xref,{})
+    }
     modules_used = function(){
       // a Map of Arrays; key is using RID; value is array of modules used
       make_list = function(an_array,module_usage){
