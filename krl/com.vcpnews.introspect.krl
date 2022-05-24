@@ -58,7 +58,6 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 <td>#{flushed_time.makeMT().ts_format()}</td>
 <td><a href="#{url}">#{url}</a></td>
 <td title="#{meta_hash}">#{meta_hash.substr(0,7)}</td>
-<td>#{rs{["meta","krl"]}.split(chr(10)).length()}</td>
 </tr>
 >>
       }
@@ -74,7 +73,6 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 <td>Last flushed</td>
 <td>Source code</td>
 <td>Hash</td>
-<td>Lines</td>
 </tr>
 #{ctx:rulesets.sort(by(sort_key)).map(one_ruleset).join("")}</table>
 >>
