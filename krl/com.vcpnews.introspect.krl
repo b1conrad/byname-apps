@@ -119,24 +119,6 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       r_use_m_relation() // set of (rid,module) ordered pairs
         .reduce(xref,{})
     }
-    modules_used = function(){
-      // a Map of Arrays; key is using RID; value is array of modules used
-      make_list = function(an_array,module_usage){
-        an_array.append(module_usage{"rid"})
-      }
-      find_usages = function(a_map,rs){
-        rid = rs{"rid"}
-.klog("rid")
-        uses = wrangler:rulesetMeta(rid){"use"} // an Array of Maps
-          .defaultsTo([])
-          .filter(function(v){v{"kind"}=="module"})
-          .reduce(make_list,[]) // an Array of Strings
-.klog("uses")
-        a_map.put(rid,uses)
-      }
-      ctx:rulesets // an Array of Maps
-        .reduce(find_usages,{})
-    }
   }
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
