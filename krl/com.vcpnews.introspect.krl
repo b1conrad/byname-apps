@@ -117,6 +117,12 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       r_use_m_relation() // set of (rid,module) ordered pairs
         .reduce(xref,{})
     }
+    ruleset = function(rid,_headers){
+      html:header(rid,"",null,null,_headers)
+      + <<<h1><code>#{rid}</code></h1>
+>>
+      + html:footer()
+    }
   }
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
