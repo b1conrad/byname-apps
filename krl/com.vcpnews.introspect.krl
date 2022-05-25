@@ -34,7 +34,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
     }
     rulesets = function(_headers){
       xref = module_usage()
-      detail = <<#{meta:host}/sky/cloud/#{meta:eci}/#{meta:rid}/ruleset?rid=>>
+      deet = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/ruleset.html?rid=>>
       apps = html:cookies(_headers){"apps"}.split(",")
       app_url = function(rid){
         rsMeta = wrangler:rulesetMeta(rid)
@@ -60,7 +60,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
         url = rs{"url"}.replace(pf,pu)
         meta_hash = rs{["meta","hash"]}
         <<<tr>
-<td#{module_title}><a href="#{detail+rid}">#{rid}</a></td>
+<td#{module_title}><a href="#{deet+rid}">#{rid}</a></td>
 <td>#{apps >< rid => app_url(rid) | ""}</td>
 <td title="#{flushed_time}">#{flushed_time.makeMT().ts_format()}</td>
 <td><a href="#{url}">#{url}</a></td>
