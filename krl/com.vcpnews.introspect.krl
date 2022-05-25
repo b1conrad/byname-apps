@@ -55,6 +55,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
           | << title="used as module by #{
             module_xref.encode().replace(re#["]#g,"&quot;")}">>
         flushed_time = rs{sort_key}
+          .encode().decode() // work around issue #602
         url = rs{"url"}.replace(pf,pu)
         meta_hash = rs{["meta","hash"]}
         <<<tr>
@@ -84,12 +85,8 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       + html:footer()
     }
     makeMT = function(ts){
-      to = ts.typeof()
-      tts = to == "String" => ts |
-            to == "Map" => ts.encode().decode() |
-            ts
-      MST = time:add(tts,{"hours": -7});
-      MDT = time:add(tts,{"hours": -6});
+      MST = time:add(ts,{"hours": -7});
+      MDT = time:add(ts,{"hours": -6});
       MDT > "2022-11-06T02" => MST |
       MST > "2022-03-13T02" => MDT |
                                MST
