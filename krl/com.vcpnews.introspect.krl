@@ -67,7 +67,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 >>
       }
       by = function(key){
-        function(a,b){a{key} cmp b{key}}
+        function(a,b){a{key}.encode() cmp b{key}.encode()}
       }
       html:header("Your rulesets","",null,null,_headers)
       + <<<h1>Your rulesets</h1>
