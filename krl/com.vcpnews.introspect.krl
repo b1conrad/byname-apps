@@ -118,8 +118,11 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
         .reduce(xref,{})
     }
     ruleset = function(rid,_headers){
+      rs = ctx:rulesets.filter(function(r){r{"rid"}==rid}).head()
       html:header(rid,"",null,null,_headers)
       + <<<h1><code>#{rid}</code></h1>
+<h2>This page is still under construction</h2>
+#{rs.encode()}
 >>
       + html:footer()
     }
