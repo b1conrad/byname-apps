@@ -119,10 +119,12 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
     }
     ruleset = function(rid,_headers){
       rs = ctx:rulesets.filter(function(r){r{"rid"}==rid}).head()
+      rs_vis = rs.encode()
+      rs_vis_len = rs_vis.length()
       html:header(rid,"",null,null,_headers)
       + <<<h1><code>#{rid}</code></h1>
 <h2>This page is still under construction</h2>
-#{rs.encode()}
+#{rs_vis.html:defendHTML(rs_vis_len)}
 >>
       + html:footer()
     }
