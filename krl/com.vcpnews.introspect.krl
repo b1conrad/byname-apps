@@ -52,13 +52,8 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       one_ruleset = function(rs){
         rid = rs{"rid"}
         module_xref = xref{rid}
-        fmt = function(xr){
-          xr.encode()
-            .replace(re#[",]#g,"&quot;, ")
-            .replace(re#["]#g,"&quot;")
-        }
         module_title = module_xref.length()==0 => ""
-          | << title="used as module by #{fmt(module_xref)}">>
+          | << title="used as module by #{module_xref.join(", ")}">>
         flushed_time = rs{sort_key}
           .encode().decode() // work around issue #602
         url = rs{"url"}.replace(pf,pu)
