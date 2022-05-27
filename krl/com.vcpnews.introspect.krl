@@ -32,22 +32,22 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 >>
       + html:footer()
     }
+    app_url = function(rid){
+      rsMeta = wrangler:rulesetMeta(rid)
+      home = rsMeta.get("shares").head() + ".html"
+      tags = rid == "byu.hr.record" => "record_audio" |
+             rid == "byu.hr.manage_apps" => "manage_apps" |
+             rsMeta.get("name")
+      eci = wrangler:channels(tags).head().get("id") || null
+      eci.isnull() => home |
+      <<<a href="#{meta:host}/c/#{eci}/query/#{rid}/#{home}">#{home}</a> >>
+    }
+    pf = re#^file:///usr/local/lib/node_modules/#
+    pu = "https://raw.githubusercontent.com/Picolab/pico-engine/master/packages/"
     rulesets = function(_headers){
       xref = module_usage()
       deet = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/ruleset.html?rid=>>
       apps = html:cookies(_headers){"apps"}.split(",")
-      app_url = function(rid){
-        rsMeta = wrangler:rulesetMeta(rid)
-        home = rsMeta.get("shares").head() + ".html"
-        tags = rid == "byu.hr.record" => "record_audio" |
-               rid == "byu.hr.manage_apps" => "manage_apps" |
-               rsMeta.get("name")
-        eci = wrangler:channels(tags).head().get("id") || null
-        eci.isnull() => home |
-        <<<a href="#{meta:host}/c/#{eci}/query/#{rid}/#{home}">#{home}</a> >>
-      }
-      pf = re#^file:///usr/local/lib/node_modules/#
-      pu = "https://raw.githubusercontent.com/Picolab/pico-engine/master/packages/"
       sort_key = ["meta","flushed"]
       one_ruleset = function(rs){
         rid = rs{"rid"}
@@ -117,13 +117,45 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
         .reduce(xref,{})
     }
     ruleset = function(rid,_headers){
+      apps = html:cookies(_headers){"apps"}.split(",")
       rs = ctx:rulesets.filter(function(r){r{"rid"}==rid}).head()
-      rs_vis = rs.encode()
-      rs_vis_len = rs_vis.length()
+      xref = module_usage()
+      deet = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/ruleset.html?rid=>>
+      module_xref = xref{rid}
+      flushed_time = rs{["meta","flushed"]}
+        .encode().decode() // work around issue #602
+      url = rs{"url"}.replace(pf,pu)
+      meta_hash = rs{["meta","hash"]}
       html:header(rid,"",null,null,_headers)
-      + <<<h1><code>#{rid}</code></h1>
-<h2>This page is still under construction</h2>
-#{rs_vis.html:defendHTML(rs_vis_len)}
+      + <<<h1>Your ruleset <code>#{rid}</code></h1>
+<table>
+<tr>
+<td>RID</td>
+<td><a href="#{deet+rid}">#{rid}</a></td>
+</tr>
+<tr>
+<td>Used as module</td>
+<td>#{module_xref.length()==0 => "No" | module_xref.join(", ")}</td>
+</tr>
+<tr>
+<td>App</td>
+<td>#{apps >< rid => app_url(rid) | "No"}</td>
+</tr>
+<tr>
+<td>Last flushed</td>
+</tr>
+<tr>
+<td title="#{flushed_time}">#{flushed_time.makeMT().ts_format()}</td>
+</tr>
+<tr>
+<td>Source code</td>
+<td><a href="#{url}">#{url}</a></td>
+</tr>
+<tr>
+<td>Hash</td>
+<td title="#{meta_hash}">#{meta_hash.substr(0,7)}</td>
+</tr>
+</table>
 >>
       + html:footer()
     }
