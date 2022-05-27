@@ -135,7 +135,10 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 </tr>
 <tr>
 <td>Provides</td>
-<td>#{rs{["meta","krlMeta","provides"]}.join(", ").defaultsTo("nothing")}</td>
+<td>#{rs{["meta","krlMeta","provides"]}
+       .defaultsTo(["nothing"])
+       .join(", ")
+     }</td>
 </tr>
 <tr>
 <td>Used as module</td>
@@ -144,6 +147,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 <tr>
 <td>Shares</td>
 <td>#{rs{["meta","krlMeta","shares"]}
+        .defaultsTo([])
         .filter(exclude("__testing"))
         .join(", ")
      }</td>
