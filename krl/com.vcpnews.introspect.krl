@@ -121,6 +121,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       rs = ctx:rulesets.filter(function(r){r{"rid"}==rid}).head()
       xref = module_usage()
       module_xref = xref{rid}
+      exclude = function(x){function(v){v != x}}
       flushed_time = rs{["meta","flushed"]}
         .encode().decode() // work around issue #602
       url = rs{"url"}.replace(pf,pu)
@@ -134,7 +135,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 </tr>
 <tr>
 <td>Provides</td>
-<td>#{rs{["meta","krlMeta","provides"]}.join(", ")}</td>
+<td>#{rs{["meta","krlMeta","provides"]}.join(", ").defaultsTo("nothing")}</td>
 </tr>
 <tr>
 <td>Used as module</td>
@@ -142,7 +143,10 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 </tr>
 <tr>
 <td>Shares</td>
-<td>#{rs{["meta","krlMeta","shares"]}.join(", ")}</td>
+<td>#{rs{["meta","krlMeta","shares"]}
+        .filter(exclude("__testing"))
+        .join(", ")
+     }</td>
 </tr>
 <tr>
 <td>App</td>
