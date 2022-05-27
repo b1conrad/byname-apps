@@ -152,6 +152,10 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 <td>Hash</td>
 <td title="#{meta_hash}">#{meta_hash.substr(0,7)}</td>
 </tr>
+<tr>
+<td>Compiler</td>
+<td>Version #{rs{["meta","compiler","version"]}}</td>
+</tr>
 </table>
 >>
       + html:footer()
