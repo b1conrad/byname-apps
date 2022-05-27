@@ -133,8 +133,16 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 <td>#{rid}</td>
 </tr>
 <tr>
+<td>Provides</td>
+<td>#{rs{["meta","krlMeta","provides"]}.join(", ")}</td>
+</tr>
+<tr>
 <td>Used as module</td>
 <td>#{module_xref.length()==0 => "No" | module_xref.join(", ")}</td>
+</tr>
+<tr>
+<td>Shares</td>
+<td>#{rs{["meta","krlMeta","shares"]}.join(", ")}</td>
 </tr>
 <tr>
 <td>App</td>
