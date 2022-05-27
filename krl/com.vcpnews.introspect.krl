@@ -120,7 +120,6 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       apps = html:cookies(_headers){"apps"}.split(",")
       rs = ctx:rulesets.filter(function(r){r{"rid"}==rid}).head()
       xref = module_usage()
-      deet = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/ruleset.html?rid=>>
       module_xref = xref{rid}
       flushed_time = rs{["meta","flushed"]}
         .encode().decode() // work around issue #602
@@ -131,7 +130,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 <table>
 <tr>
 <td>RID</td>
-<td><a href="#{deet+rid}">#{rid}</a></td>
+<td>#{rid}</td>
 </tr>
 <tr>
 <td>Used as module</td>
@@ -143,8 +142,6 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 </tr>
 <tr>
 <td>Last flushed</td>
-</tr>
-<tr>
 <td title="#{flushed_time}">#{flushed_time.makeMT().ts_format()}</td>
 </tr>
 <tr>
