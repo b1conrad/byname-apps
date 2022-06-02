@@ -153,10 +153,10 @@ ruleset css3colors {
       t_i == "Number" => indent.between(0,40).as_spaces() |
                          ""
     }
-    options = function(indent){
+    options = function(indent,default){
       left_margin = indent.as_margin()
       gen_option = function(v,k){
-        <<#{left_margin}<option value="#{v}">#{k}</option>
+        <<#{left_margin}<option value="#{v}"#{k==default => " selected" | ""}>#{k}</option>
 >>
       }
       colormap.map(gen_option).values().join("")
