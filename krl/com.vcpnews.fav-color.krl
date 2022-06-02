@@ -39,8 +39,24 @@ Favorite color: <select name="fav_color">
 >>
       + html:footer()
     }
-    options = function(indent,default){ // use from colors module when available
-      left_margin = indent || ""
+// use from colors module when available
+    between = function(n,min,max){
+      i = n.math:int()
+      i < min => min |
+      i > max => max |
+      i
+    }
+    as_spaces = function(n){
+      n == 0 => "" | 1.range(n).map(function(n){" "}).join("")
+    }
+    as_margin = function(indent){
+      t_i = typeof(indent)
+      t_i == "String" => indent |
+      t_i == "Number" => indent.between(0,40).as_spaces() |
+                         ""
+    }
+    options = function(indent,default){
+      left_margin = indent.as_margin()
       gen_option = function(v,k){
         <<#{left_margin}<option value="#{v}"#{k==default => " selected" | ""}>#{k}</option>
 >>

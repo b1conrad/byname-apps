@@ -138,8 +138,23 @@ ruleset css3colors {
       "whitesmoke": "#f5f5f5",
       "yellowgreen": "#9acd32",
     }
+    between = function(n,min,max){
+      i = n.math:int()
+      i < min => min |
+      i > max => max |
+      i
+    }
+    as_spaces = function(n){
+      n == 0 => "" | 1.range(n).map(function(n){" "}).join("")
+    }
+    as_margin = function(indent){
+      t_i = typeof(indent)
+      t_i == "String" => indent |
+      t_i == "Number" => indent.between(0,40).as_spaces() |
+                         ""
+    }
     options = function(indent){
-      left_margin = indent
+      left_margin = indent.as_margin()
       gen_option = function(v,k){
         <<#{left_margin}<option value="#{v}">#{k}</option>
 >>
