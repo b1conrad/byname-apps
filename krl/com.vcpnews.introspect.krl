@@ -127,7 +127,6 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       url = rs{"url"}.replace(pf,pu)
       meta_hash = rs{["meta","hash"]}
       source_krl = http:get(url){"content"}
-.klog("source_krl")
       source_hash = math:hash("sha256",source_krl)
       redden = source_hash == meta_hash => ""
                                          | << style="color:red">>
