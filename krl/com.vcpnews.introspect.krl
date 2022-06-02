@@ -129,6 +129,8 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       source_krl = http:get(url){"content"}
 .klog("source_krl")
       source_hash = math:hash("sha256",source_krl)
+      redden = source_hash == meta_hash => ""
+                                         | << style="color:red">>
       html:header(rid,"",null,null,_headers)
       + <<<h1>Your ruleset <code>#{rid}</code></h1>
 <table>
@@ -173,7 +175,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 </tr>
 <tr>
 <td>Source code hash</td>
-<td title="#{source_hash}">#{source_hash.substr(0,7)}</td>
+<td title="#{source_hash}"#{redden}>#{source_hash.substr(0,7)}</td>
 </tr>
 </table>
 >>
