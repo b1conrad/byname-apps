@@ -126,6 +126,9 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
         .encode().decode() // work around issue #602
       url = rs{"url"}.replace(pf,pu)
       meta_hash = rs{["meta","hash"]}
+      source_krl = http:get(url){"content"}
+.klog("source_krl")
+      source_hash = math:hash("sha256",source_krl)
       html:header(rid,"",null,null,_headers)
       + <<<h1>Your ruleset <code>#{rid}</code></h1>
 <table>
@@ -167,6 +170,10 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 <tr>
 <td>Hash</td>
 <td title="#{meta_hash}">#{meta_hash.substr(0,7)}</td>
+</tr>
+<tr>
+<td>Source code hash</td>
+<td title="#{source_hash}">#{source_hash.substr(0,7)}</td>
 </tr>
 </table>
 >>
