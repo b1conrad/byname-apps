@@ -45,6 +45,9 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
     }
     pf = re#^file:///usr/local/lib/node_modules/#
     pu = "https://raw.githubusercontent.com/Picolab/pico-engine/master/packages/"
+    by = function(key){
+      function(a,b){a{key}.encode() cmp b{key}.encode()}
+    }
     rulesets = function(_headers){
       xref = module_usage()
       deet = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/ruleset.html?rid=>>
@@ -67,9 +70,6 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 <td title="#{meta_hash}">#{meta_hash.substr(0,7)}</td>
 </tr>
 >>
-      }
-      by = function(key){
-        function(a,b){a{key}.encode() cmp b{key}.encode()}
       }
       html:header("Your rulesets","",null,null,_headers)
       + <<<h1>Your rulesets</h1>
@@ -182,8 +182,22 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       + html:footer()
     }
     channels = function(_headers){
+      cs = wrangler:channels()
+      one_channel = function(c){
+        <<<tr>
+<td>#{c{"id"}}</td>
+<td>#{c{"tags"}.join(", ")}</td>
+</tr>
+>>
+      }
       html:header("Your channels","",null,null,_headers)
       + <<<h1>Your channels</h1>
+<table>
+<tr>
+<td>ECI</td>
+<td>tags</td>
+</tr>
+#{cs.sort(by("id")).map(one_channel).join("")}</table>
 >>
       + html:footer()
     }
