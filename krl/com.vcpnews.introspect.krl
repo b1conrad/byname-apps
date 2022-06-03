@@ -4,7 +4,7 @@ ruleset com.vcpnews.introspect {
     use module io.picolabs.wrangler alias wrangler
     use module io.picolabs.subscription alias subs
     use module html.byu alias html
-    shares introspect, rulesets, ruleset
+    shares introspect, rulesets, ruleset, channels
   }
   global {
     introspect = function(_headers){
