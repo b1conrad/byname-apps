@@ -185,7 +185,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       cs = wrangler:channels()
       one_channel = function(c){
         <<<tr>
-<td>#{c{"id"}}</td>
+<td><a href="channel.html"><code>#{c{"id"}}</code></a></td>
 <td>#{c{"tags"}.join(", ")}</td>
 </tr>
 >>
