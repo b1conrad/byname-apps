@@ -15,6 +15,7 @@ ruleset com.vcpnews.introspect {
       pName = pECI.isnull() => null | wrangler:picoQuery(pECI,"io.picolabs.wrangler","name")
       apps = html:cookies(_headers){"apps"}.split(",")
       rs_link = <<<a href="rulesets.html">rulesets</a\>>>
+      cs_link = <<<a href="channels.html">channels</a\>>>
       html:header("manage introspections","",null,null,_headers)
       + <<
 <h1>Manage introspections</h1>
@@ -23,8 +24,8 @@ ruleset com.vcpnews.introspect {
   pName => << and its parent pico is named #{pName}.>> | "."}</p>
 <p>It has #{wrangler:installedRIDs().length()} #{rs_link}#{
   apps.length() => <<, of which #{apps.length()} are apps.
-These can be managed with the <a href="#{manage_appsURL}"><code>byu.hr.manage_apps</code></a> app.>> | "."}</p>
-<p>It has #{wrangler:channels().length()} channels.</p>
+The apps can be managed with the <a href="#{manage_appsURL}"><code>byu.hr.manage_apps</code></a> app.>> | "."}</p>
+<p>It has #{wrangler:channels().length()} #{cs_link}.</p>
 <p>It has #{subs_count} subscription#{subs_count==1 => "" | "s"}.
 These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code></a> app.</p>
 <h2>Technical</h2>
