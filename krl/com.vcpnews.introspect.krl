@@ -183,6 +183,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
     }
     channels = function(_headers){
       cs = wrangler:channels()
+        .filter(function(c){c{"familyChannelPicoID"}.isnull()})
       one_channel = function(c){
         <<<tr>
 <td><a href="channel.html"><code>#{c{"id"}}</code></a></td>
