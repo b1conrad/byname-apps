@@ -181,6 +181,12 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 >>
       + html:footer()
     }
+    channels = function(_headers){
+      html:header("Your channels","",null,null,_headers)
+      + <<<h1>Your channels</h1>
+>>
+      + html:footer()
+    }
   }
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
