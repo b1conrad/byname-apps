@@ -22,9 +22,9 @@ ruleset com.vcpnews.introspect {
 <h2>Overview</h2>
 <p>Your pico is named #{wrangler:name()}#{
   pName => << and its parent pico is named #{pName}.>> | "."}</p>
-<p>It has #{wrangler:installedRIDs().length()} #{rs_link}#{
-  apps.length() => <<, of which #{apps.length()} are apps.
-The apps can be managed with the <a href="#{manage_appsURL}"><code>byu.hr.manage_apps</code></a> app.>> | "."}</p>
+<p>It has #{wrangler:installedRIDs().length()} #{rs_link},
+of which #{apps.length()} are apps.
+The apps can be managed with the <a href="#{manage_appsURL}"><code>byu.hr.manage_apps</code></a> app.</p>
 <p>It has #{wrangler:channels().length()} #{cs_link}.</p>
 <p>It has #{subs_count} subscription#{subs_count==1 => "" | "s"}.
 These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code></a> app.</p>
