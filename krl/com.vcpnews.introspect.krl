@@ -203,8 +203,12 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
       + html:footer()
     }
     channel = function(eci,_headers){
+      this_c = wrangler:channels()
+        .filter(function(c){c{"id"}==eci})
       html:header(eci,"",null,null,_headers)
       + <<<h1>Your <code>#{eci}</code> channel</h1>
+<h2>Tags</h2>
+<p>#{this_c{"tags"}.join(", ")}</p>
 >>
       + html:footer()
     }
