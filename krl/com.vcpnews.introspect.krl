@@ -4,7 +4,7 @@ ruleset com.vcpnews.introspect {
     use module io.picolabs.wrangler alias wrangler
     use module io.picolabs.subscription alias subs
     use module html.byu alias html
-    shares introspect, rulesets, ruleset, channels
+    shares introspect, rulesets, ruleset, channels, channel
   }
   global {
     introspect = function(_headers){
@@ -186,7 +186,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
         .filter(function(c){c{"familyChannelPicoID"}.isnull()})
       one_channel = function(c){
         <<<tr>
-<td><a href="channel.html"><code>#{c{"id"}}</code></a></td>
+<td><a href="channel.html?eci=#{c{"id"}}"><code>#{c{"id"}}</code></a></td>
 <td>#{c{"tags"}.join(", ")}</td>
 </tr>
 >>
@@ -199,6 +199,12 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 <td>tags</td>
 </tr>
 #{cs.sort(by("id")).map(one_channel).join("")}</table>
+>>
+      + html:footer()
+    }
+    channel = function(eci,_headers){
+      html:header(eci,"",null,null,_headers)
+      + <<<h1>Your <code>#{eci}</code> channel</h1>
 >>
       + html:footer()
     }
