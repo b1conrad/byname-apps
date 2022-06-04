@@ -205,6 +205,7 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
     channel = function(eci,_headers){
       this_c = wrangler:channels()
         .filter(function(c){c{"id"}==eci})
+        .head()
       html:header(eci,"",null,null,_headers)
       + <<<h1>Your <code>#{eci}</code> channel</h1>
 <table>
@@ -214,6 +215,10 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
 </tr>
 <td>tags</td>
 <td>#{this_c{"tags"}.join(", ")}</td>
+</tr>
+<tr>
+<td>raw</td>
+<td>#{this_c.encode()}</td>
 </tr>
 </table>
 >>
