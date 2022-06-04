@@ -207,8 +207,15 @@ These can be managed with the <a href="#{relateURL}"><code>byu.hr.relate</code><
         .filter(function(c){c{"id"}==eci})
       html:header(eci,"",null,null,_headers)
       + <<<h1>Your <code>#{eci}</code> channel</h1>
-<h2>Tags</h2>
-<p>#{this_c{"tags"}.join(", ")}</p>
+<table>
+<tr>
+<td>ECI</td>
+<td><code>#{this_c{"id"}}</code></td>
+</tr>
+<td>tags</td>
+<td>#{this_c{"tags"}.join(", ")}</td>
+</tr>
+</table>
 >>
       + html:footer()
     }
