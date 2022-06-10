@@ -39,7 +39,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
              rsMeta.get("name")
       eci = wrangler:channels(tags).head().get("id") || null
       eci.isnull() => home |
-      <<<a href="#{meta:host}/c/#{eci}/query/#{rid}/#{home}">#{home}</a> >>
+      <<<a href="#{meta:host}/c/#{eci}/query/#{rid}/#{home}">#{home}</a\>>>
     }
     pf = re#^file:///usr/local/lib/node_modules/#
     pu = "https://raw.githubusercontent.com/Picolab/pico-engine/master/packages/"
@@ -168,7 +168,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 <td><a href="#{url}">#{url}</a></td>
 </tr>
 <tr>
-<td>Hash</td>
+<td>Internal hash</td>
 <td title="#{meta_hash}">#{meta_hash.substr(0,7)}</td>
 </tr>
 <tr>
