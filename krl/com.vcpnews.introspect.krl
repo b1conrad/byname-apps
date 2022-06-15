@@ -14,6 +14,7 @@ ruleset com.vcpnews.introspect {
       apps = html:cookies(_headers){"apps"}.split(",")
       rs_link = <<<a href="rulesets.html">rulesets</a\>>>
       cs_link = <<<a href="channels.html">channels</a\>>>
+      ss_link = <<<a href="subscriptions.html">subscription#{subs_count==1 => "" | "s"}</a\>>>
       html:header("manage introspections","",null,null,_headers)
       + <<
 <h1>Manage introspections</h1>
@@ -24,7 +25,7 @@ ruleset com.vcpnews.introspect {
 of which #{apps.length()} are apps.
 The apps can be managed with #{app_url("byu.hr.manage_apps")}.</p>
 <p>It has #{wrangler:channels().length()} #{cs_link}.</p>
-<p>It has #{subs_count} subscription#{subs_count==1 => "" | "s"}.
+<p>It has #{subs_count} #{subs_count => ss_link | "subscriptions"}.
 These can be managed with #{app_url("byu.hr.relate")}.</p>
 <h2>Technical</h2>
 <button disabled title="not yet implemented">export</button>
