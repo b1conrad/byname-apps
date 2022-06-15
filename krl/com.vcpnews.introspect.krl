@@ -222,13 +222,14 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 >>
       + html:footer()
     }
-    subscriptions = function(_header){
+    subscriptions = function(_headers){
       ss = subs:established()
       one_subs = function(s){
         <<<tr>
 <td><a href="subscription.html?Id=#{s{"Id"}}"><code>#{s{"Id"}}</code></a></td>
 <td>#{s{"Rx_role"}}</td>
 <td>#{s{"Tx_role"}}</td>
+<td>#{s.encode()}</td>
 </tr>
 >>
       }
@@ -239,6 +240,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 <td>Id</td>
 <td>Rx_role</td>
 <td>Tx_role</td>
+<td>raw</td>
 </tr>
 #{ss.sort(by("Id")).map(one_subs).join("")}</table>
 >>
