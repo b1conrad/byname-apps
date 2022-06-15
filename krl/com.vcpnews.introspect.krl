@@ -223,13 +223,13 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 >>
       + html:footer()
     }
+    participant_name = function(eci){
+      thisPico = ctx:channels.any(function(c){c{"id"}==eci})
+      thisPico => "yourself" | ctx:query(eci,"byu.hr.core","displayName")
+    }
     subscriptions = function(_headers){
       ss = subs:established()
         .filter(function(s){s{"Tx_role"}!="participant list"})
-      participant_name = function(eci){
-        thisPico = ctx:channels.any(function(c){c{"id"}==eci})
-        thisPico => "yourself" | ctx:query(eci,"byu.hr.core","displayName")
-      }
       one_subs = function(s){
         <<<tr>
 <td><a href="subscription.html?Id=#{s{"Id"}}"><code>#{s{"Id"}}</code></a></td>
@@ -253,7 +253,31 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
       + html:footer()
     }
     subscription = function(_headers,Id){
+      this_s = subs:established("Id",Id).head()
       html:header(Id,"",null,null,_headers)
+      + <<<h1>Your <code>#{Id}</code> subscription</h1>
+<table>
+<tr>
+<td>Id</td>
+<td><code>#{this_s{"Id"}}</code></td>
+</tr>
+<td>your role</td>
+<td>#{this_s{"Rx_role"}}</td>
+</tr>
+</tr>
+<td>their role</td>
+<td>#{this_s{"Tx_role"}}</td>
+</tr>
+</tr>
+<td>with</td>
+<td>#{this_s{"Tx"}.participant_name()}</td>
+</tr>
+<tr>
+<td>raw</td>
+<td>#{this_s.encode()}</td>
+</tr>
+</table>
+>>
       + html:footer()
     }
   }
