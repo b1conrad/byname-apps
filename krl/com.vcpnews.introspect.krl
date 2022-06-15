@@ -225,12 +225,17 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
     }
     subscriptions = function(_headers){
       ss = subs:established()
+        .filter(function(s){s{"Tx_role"}!="participant list"})
+      participant_name = function(eci){
+        thisPico = ctx:channels.any(function(c){c{"id"}==eci})
+        thisPico ==> "yourself" | ctx:query(eci,"byu.hr.core","displayName")
+      }
       one_subs = function(s){
         <<<tr>
 <td><a href="subscription.html?Id=#{s{"Id"}}"><code>#{s{"Id"}}</code></a></td>
 <td>#{s{"Rx_role"}}</td>
 <td>#{s{"Tx_role"}}</td>
-<td>#{s.encode()}</td>
+<td>#{s{"Tx"}.participant_name()}</td>
 </tr>
 >>
       }
@@ -239,9 +244,9 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 <table>
 <tr>
 <td>Id</td>
-<td>Rx_role</td>
-<td>Tx_role</td>
-<td>raw</td>
+<td>your role</td>
+<td>their role</td>
+<td>with</td>
 </tr>
 #{ss.sort(by("Id")).map(one_subs).join("")}</table>
 >>
