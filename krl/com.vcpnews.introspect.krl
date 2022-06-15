@@ -8,7 +8,9 @@ ruleset com.vcpnews.introspect {
   }
   global {
     introspect = function(_headers){
-      subs_count = subs:established().length()
+      subs_count = subs:established()
+        .filter(function(s){s{"Tx_role"}!="participant list"})
+        .length()
       pECI = wrangler:parent_eci()
       pName = pECI.isnull() => null | wrangler:picoQuery(pECI,"io.picolabs.wrangler","name")
       apps = html:cookies(_headers){"apps"}.split(",")
