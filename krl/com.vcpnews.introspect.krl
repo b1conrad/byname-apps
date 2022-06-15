@@ -4,7 +4,7 @@ ruleset com.vcpnews.introspect {
     use module io.picolabs.wrangler alias wrangler
     use module io.picolabs.subscription alias subs
     use module html.byu alias html
-    shares introspect, rulesets, ruleset, channels, channel, subscriptions
+    shares introspect, rulesets, ruleset, channels, channel, subscriptions, subscription
   }
   global {
     introspect = function(_headers){
@@ -250,6 +250,10 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 </tr>
 #{ss.sort(by("Id")).map(one_subs).join("")}</table>
 >>
+      + html:footer()
+    }
+    subscription = function(_headers,Id){
+      html:header(Id,"",null,null,_headers)
       + html:footer()
     }
   }
