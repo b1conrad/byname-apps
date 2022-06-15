@@ -228,7 +228,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
         .filter(function(s){s{"Tx_role"}!="participant list"})
       participant_name = function(eci){
         thisPico = ctx:channels.any(function(c){c{"id"}==eci})
-        thisPico ==> "yourself" | ctx:query(eci,"byu.hr.core","displayName")
+        thisPico => "yourself" | ctx:query(eci,"byu.hr.core","displayName")
       }
       one_subs = function(s){
         <<<tr>
