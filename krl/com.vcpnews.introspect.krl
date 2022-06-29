@@ -229,20 +229,22 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
       thisPico = ctx:channels.any(function(c){c{"id"}==eci})
       thisPico => "yourself" | ctx:query(eci,"byu.hr.core","displayName")
     }
+    subs_tags = function(s){
+      wrangler:channels()
+        .filter(function(c){c{"id"}==s{"Rx"}})
+        .head()
+        {"tags"}.join(", ")
+    }
     subscriptions = function(_headers){
       ss = subs:established()
         .filter(function(s){s{"Tx_role"}!="participant list"})
       one_subs = function(s){
-        tags = wrangler:channels()
-          .filter(function(c){c{"id"}==s{"Rx"}})
-          .head()
-          {"tags"}
         <<<tr>
 <td><a href="subscription.html?Id=#{s{"Id"}}"><code>#{s{"Id"}}</code></a></td>
 <td>#{s{"Rx_role"}}</td>
 <td>#{s{"Tx_role"}}</td>
 <td>#{s{"Tx"}.participant_name()}</td>
-<td>#{tags.encode()}</td>
+<td>#{subs_tags(s)}</td>
 </tr>
 >>
       }
@@ -269,16 +271,29 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 <td>Id</td>
 <td><code>#{this_s{"Id"}}</code></td>
 </tr>
+<tr>
+<td>your channel</td>
+<td><code>#{this_s{"Rx"}}</code></td>
+</tr>
+<tr>
+<td>their channel</td>
+<td><code>#{this_s{"Tx"}}</code></td>
+</tr>
+<tr>
 <td>your role</td>
 <td>#{this_s{"Rx_role"}}</td>
 </tr>
-</tr>
+<tr>
 <td>their role</td>
 <td>#{this_s{"Tx_role"}}</td>
 </tr>
 </tr>
 <td>with</td>
 <td>#{this_s{"Tx"}.participant_name()}</td>
+</tr>
+<tr>
+<td>channel tags</td>
+<td>#{subs_tags(this_s)}</td>
 </tr>
 <tr>
 <td>raw</td>
