@@ -16,7 +16,7 @@ ruleset com.vcpnews.introspect {
       apps = html:cookies(_headers){"apps"}.split(",")
       rs_link = <<<a href="rulesets.html">rulesets</a\>>>
       cs_link = <<<a href="channels.html">channels</a\>>>
-      ss_link = <<<a href="subscriptions.html">subscription#{subs_count==1 => "" | "s"}</a\>>>
+      ss_link = <<#{subs_count} <a href="subscriptions.html">subscription#{subs_count==1 => "" | "s"}</a\>>>
       html:header("manage introspections","",null,null,_headers)
       + <<
 <h1>Manage introspections</h1>
@@ -27,7 +27,7 @@ ruleset com.vcpnews.introspect {
 of which #{apps.length()} are apps.
 The apps can be managed with #{app_url("byu.hr.manage_apps")}.</p>
 <p>It has #{wrangler:channels().length()} #{cs_link}.</p>
-<p>It has #{subs_count} #{subs_count => ss_link | "subscriptions"}.
+<p>It has #{subs_count => ss_link | "no subscriptions"}.
 These can be managed with #{app_url("byu.hr.relate")}.</p>
 <h2>Technical</h2>
 <button disabled title="not yet implemented">export</button>
@@ -233,11 +233,16 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
       ss = subs:established()
         .filter(function(s){s{"Tx_role"}!="participant list"})
       one_subs = function(s){
+        tags = wrangler:channels()
+          .filter(function(c){c{"id"}==s{"Rx"}})
+          .head()
+          {"tags"}
         <<<tr>
 <td><a href="subscription.html?Id=#{s{"Id"}}"><code>#{s{"Id"}}</code></a></td>
 <td>#{s{"Rx_role"}}</td>
 <td>#{s{"Tx_role"}}</td>
 <td>#{s{"Tx"}.participant_name()}</td>
+<td>#{tags.encode()}</td>
 </tr>
 >>
       }
@@ -249,6 +254,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 <td>your role</td>
 <td>their role</td>
 <td>with</td>
+<td>channel tags</td>
 </tr>
 #{ss.sort(by("Id")).map(one_subs).join("")}</table>
 >>
