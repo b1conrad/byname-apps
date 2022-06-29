@@ -264,6 +264,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
     }
     subscription = function(_headers,Id){
       this_s = subs:established("Id",Id).head()
+      Rx = this_s{"Rx"}
       html:header(Id,"",null,null,_headers)
       + <<<h1>Your <code>#{Id}</code> subscription</h1>
 <table>
@@ -273,7 +274,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 </tr>
 <tr>
 <td>your channel</td>
-<td><code>#{this_s{"Rx"}}</code></td>
+<td><a href="channel.html?eci=#{Rx}"><code>#{Rx}</code></a></td>
 </tr>
 <tr>
 <td>their channel</td>
@@ -294,10 +295,6 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 <tr>
 <td>channel tags</td>
 <td>#{subs_tags(this_s)}</td>
-</tr>
-<tr>
-<td>raw</td>
-<td>#{this_s.encode()}</td>
 </tr>
 </table>
 >>
