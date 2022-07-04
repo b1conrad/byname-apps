@@ -1,6 +1,6 @@
-ruleset bazaar_apps {
+ruleset com.vcpnews.bazaar_apps {
   meta {
-    name "bazaar apps"
+    name "bazaar_apps"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
     shares bazaar
