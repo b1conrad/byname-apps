@@ -17,6 +17,7 @@ ruleset com.vcpnews.introspect {
       rs_link = <<<a href="rulesets.html">rulesets</a\>>>
       cs_link = <<<a href="channels.html">channels</a\>>>
       ss_link = <<#{subs_count} <a href="subscriptions.html">subscription#{subs_count==1 => "" | "s"}</a\>>>
+      child_count = wrangler:children().length()
       html:header("manage introspections","",null,null,_headers)
       + <<
 <h1>Manage introspections</h1>
@@ -29,6 +30,7 @@ The apps can be managed with #{app_url("byu.hr.manage_apps")}.</p>
 <p>It has #{wrangler:channels().length()} #{cs_link}.</p>
 <p>It has #{subs_count => ss_link | "no subscriptions"}.
 These can be managed with #{app_url("byu.hr.relate")}.</p>
+<p>It has #{child_count} child picos.</p>
 <h2>Technical</h2>
 <button disabled title="not yet implemented">export</button>
 >>
