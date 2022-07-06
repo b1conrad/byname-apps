@@ -78,4 +78,23 @@ ruleset com.vcpnews.bazaar_apps {
     foreach wrangler:channels(tags).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
+  rule acceptNewApp {
+    select when bazaar_apps new_app
+      rid re#^(.+)$#
+      home re#^(.+)$#
+      rsname re#(.*)#
+      event_domain re#(.*)#
+      setting(rid,home,rsname,event_domain)
+    pre {
+      spec = {
+        "rid": rid,
+        "name": home,
+        "rsname": rsname || home,
+        "event_domain": event_domain || rid.replace(re#[.-]#g,"_")
+      }
+    }
+    fired {
+      ent:apps{rid} := spec
+    }
+  }
 }
