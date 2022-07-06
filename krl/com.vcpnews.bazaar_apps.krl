@@ -19,8 +19,10 @@ ruleset com.vcpnews.bazaar_apps {
       html:header("manage bazaar apps","",null,null,_headers)
       + <<
 <h1>Manage bazaar apps</h1>
+<h2>Apps</h2>
 <ul>
 #{li_apps().join("")}</ul>
+<h2>New app</h2>
 <form action="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/new_app">
 <input name="rid" placeholder="RID"><br>
 <input name="rsname" placeholder="rsname"><br>
