@@ -7,7 +7,7 @@ ruleset com.vcpnews.bazaar_apps {
   }
   global {
     bazaar = function(_headers){
-      base = "#{meta:host}/sky/cloud/#{meta:eci}/#{meta:rid}/krl_code.txt"
+      base = <<#{meta:host}/sky/cloud/#{meta:eci}/#{meta:rid}/krl_code.txt>>
       li_apps = function(){
         ent:apps
           .values()
