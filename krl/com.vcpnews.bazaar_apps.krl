@@ -34,7 +34,7 @@ ruleset com.vcpnews.bazaar_apps {
       html:header("manage #{home}","",null,null,_headers)
       + <<
 <h1>Manage #{home}</h1>
-/>/>
+\>\>
       + html:footer()
     }
   }
