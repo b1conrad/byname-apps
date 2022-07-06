@@ -17,10 +17,7 @@ ruleset com.vcpnews.bazaar_apps {
     krl_code = function(rid){
       rsname = ent:apps{[rid,"rsname"]}
       home = ent:apps{[rid,"name"]}
-      channel_tags = [
-        rid.replace(re#[.]#g,"-"),
-        ent:apps{[rid,"name"]}
-      ].encode()
+      channel_tags = [ent:apps{[rid,"rsname"]}].encode()
       event_domain = ent:apps{[rid,"event_domain"]}
       <<ruleset #{rid} {
   meta {
@@ -31,9 +28,9 @@ ruleset com.vcpnews.bazaar_apps {
   }
   global {
     #{home} = function(_headers){
-      html:header("manage #{home}","",null,null,_headers)
+      html:header("manage #{rsname}","",null,null,_headers)
       + <<
-<h1>Manage #{home}</h1>
+<h1>Manage #{rsname}</h1>
 \>\>
       + html:footer()
     }
