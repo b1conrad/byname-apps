@@ -27,6 +27,7 @@ ruleset com.vcpnews.bazaar_apps {
 <h2>New app</h2>
 <form action="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/new_app">
 <input name="rid" placeholder="RID"><br>
+<input name="home" placeholder="homepage"><br>
 <input name="rsname" placeholder="rsname"><br>
 <input name="event_domain" placeholder="event_domain"></br>
 <button type="submit">Submit</button>
