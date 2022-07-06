@@ -69,7 +69,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 <td#{module_title}><a href="#{deet+rid}">#{rid}</a></td>
 <td>#{apps >< rid => app_url(rid) | ""}</td>
 <td title="#{flushed_time}">#{flushed_time.makeMT().ts_format()}</td>
-<td><a href="#{url}">#{url}</a></td>
+<td><a href="#{url}" target="_blank">#{url}</a></td>
 <td title="#{meta_hash}">#{meta_hash.substr(0,7)}</td>
 </tr>
 >>
@@ -170,7 +170,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 </tr>
 <tr>
 <td>Source code</td>
-<td><a href="#{url}">#{url}</a></td>
+<td><a href="#{url}" target="_blank">#{url}</a></td>
 </tr>
 <tr>
 <td>Internal hash</td>
