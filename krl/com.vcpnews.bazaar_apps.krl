@@ -7,9 +7,26 @@ ruleset com.vcpnews.bazaar_apps {
   }
   global {
     bazaar = function(_headers){
+      base = "#{meta:host}/sky/cloud/#{meta:eci}/#{meta:rid}/krl_code.txt"
+      li_apps = function(){
+        ent:apps.map(function(a){
+          <<<li><code>#{a.encode()}</code>
+<a href="#{base}?rid=#{a{"rid"}}">make KRL</a>
+</li>
+>>
+        })
+      }
       html:header("manage bazaar apps","",null,null,_headers)
       + <<
 <h1>Manage bazaar apps</h1>
+<ul>
+#{li_apps.join("")}</ul>
+<form action="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/new_app">
+<input name="rid" placeholder="RID"><br>
+<input name="rsname" placeholder="rsname"><br>
+<input name="event_domain" placeholder="event_domain"></br>
+<button type="submit">Submit</button>
+</form>
 >>
       + html:footer()
     }
@@ -93,5 +110,12 @@ ruleset com.vcpnews.bazaar_apps {
     fired {
       ent:apps{rid} := spec
     }
+  }
+  rule redirectBack {
+    select when bazaar_apps new_app
+    pre {
+      referrer = event:attr("_headers").get("referer") // sic
+    }
+    if referrer then send_directive("_redirect",{"url":referrer})
   }
 }
