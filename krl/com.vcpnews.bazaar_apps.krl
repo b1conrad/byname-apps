@@ -9,12 +9,14 @@ ruleset com.vcpnews.bazaar_apps {
     bazaar = function(_headers){
       base = "#{meta:host}/sky/cloud/#{meta:eci}/#{meta:rid}/krl_code.txt"
       li_apps = function(){
-        ent:apps.map(function(a){
-          <<<li><code>#{a.encode()}</code>
-<a href="#{base}?rid=#{a{"rid"}}">make KRL</a>
+        ent:apps
+          .values()
+          .map(function(spec){
+            <<<li><code>#{spec.encode()}</code>
+<a href="#{base}?rid=#{spec{"rid"}}">make KRL</a>
 </li>
 >>
-        })
+          })
       }
       html:header("manage bazaar apps","",null,null,_headers)
       + <<
