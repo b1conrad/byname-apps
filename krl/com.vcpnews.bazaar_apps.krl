@@ -13,7 +13,7 @@ ruleset com.vcpnews.bazaar_apps {
           .values()
           .map(function(spec){
             <<<li><code>#{spec.encode()}</code>
-<a href="#{base}?rid=#{spec{"rid"}}">make KRL</a>
+<a href="#{base}?rid=#{spec{"rid"}}" target="_blank">make KRL</a>
 </li>
 >>
           })
