@@ -33,6 +33,7 @@ table input {
 <td>#{spec.get("rsname")}</td>
 <td>#{spec.get("event_domain")}</td>
 <td><a href="#{base}?rid=#{rid}" target="_blank">make KRL</a></td>
+<td><a href="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/app_not_wanted?rid=#{rid}" onclick="return confirm('This cannot be undone, and the app may be lost if you proceed.')">del</a></td>
 </tr>
 >>
           })
@@ -48,6 +49,7 @@ table input {
 <th>App meta name</th>
 <th>event domain</th>
 <th>boilerplate</th>
+<th>Delete</th>
 </tr>
 #{li_apps().join("")}</table>
 <h2>New app</h2>
@@ -142,8 +144,16 @@ table input {
       ent:apps{rid} := spec
     }
   }
+  rule deleteApp {
+    select when bazaar_apps app_not_wanted
+      rid re#^(.+)$# setting(rid)
+    fired {
+      clear ent:apps{rid}
+    }
+  }
   rule redirectBack {
     select when bazaar_apps new_app
+             or bazaar_apps app_not_wanted
     pre {
       referrer = event:attr("_headers").get("referer") // sic
     }
