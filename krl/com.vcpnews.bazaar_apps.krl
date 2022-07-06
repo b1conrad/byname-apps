@@ -6,6 +6,20 @@ ruleset com.vcpnews.bazaar_apps {
     shares bazaar, krl_code
   }
   global {
+    styles = <<<style type="text/css">
+table {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+td, th {
+  border: 1px solid black;
+  padding: 5px;
+}
+table input {
+  width: 90%;
+}
+</style>
+>>
     bazaar = function(_headers){
       base = <<#{meta:host}/sky/cloud/#{meta:eci}/#{meta:rid}/krl_code.txt>>
       li_apps = function(){
@@ -23,7 +37,7 @@ ruleset com.vcpnews.bazaar_apps {
 >>
           })
       }
-      html:header("manage bazaar apps","",null,null,_headers)
+      html:header("manage bazaar apps",styles,null,null,_headers)
       + <<
 <h1>Manage bazaar apps</h1>
 <h2>Apps</h2>
