@@ -43,19 +43,19 @@ table input {
 <h2>Apps</h2>
 <table>
 <tr>
-<th>RID</th>
-<th>name</th>
-<th>rsname</th>
+<th>Ruleset ID</th>
+<th>App Name</th>
+<th>App meta name</th>
 <th>event domain</th>
 <th>boilerplate</th>
 </tr>
 #{li_apps().join("")}</table>
 <h2>New app</h2>
 <form action="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/new_app">
-<input name="rid" placeholder="RID"> e.x. my.special.guessing-app<br>
-<input name="home" placeholder="homepage"> e.x. guess<br>
-<input name="rsname" placeholder="rsname"> e.x. guesses<br>
-<input name="event_domain" placeholder="event_domain"> e.x. guessing_app<br>
+<input name="rid" placeholder="Ruleset ID"> e.x. my.special.guessing-app<br>
+<input name="home" placeholder="App Name"> e.x. guess<br>
+<input name="rsname" placeholder="App meta name"> e.x. guesses<br>
+<input name="event_domain" placeholder="event domain"> e.x. guessing_app<br>
 <button type="submit">Submit</button>
 </form>
 >>
