@@ -7,9 +7,9 @@ ruleset my.special.guessing-app {
   }
   global {
     guess = function(_headers){
-      html:header("manage guess","",null,null,_headers)
+      html:header("manage guesses","",null,null,_headers)
       + <<
-<h1>Manage guess</h1>
+<h1>Manage guesses</h1>
 >>
       + html:footer()
     }
@@ -18,7 +18,7 @@ ruleset my.special.guessing-app {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
     every {
       wrangler:createChannel(
-        ["my-special-guessing-app","guess"],
+        ["guesses"],
         {"allow":[{"domain":"guessing_app","name":"*"}],"deny":[]},
         {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
       )
@@ -29,7 +29,7 @@ ruleset my.special.guessing-app {
   }
   rule keepChannelsClean {
     select when guessing_app factory_reset
-    foreach wrangler:channels(["my-special-guessing-app","guess"]).reverse().tail() setting(chan)
+    foreach wrangler:channels(["guesses"]).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
 }
