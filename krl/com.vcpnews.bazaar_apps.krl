@@ -12,9 +12,14 @@ ruleset com.vcpnews.bazaar_apps {
         ent:apps
           .values()
           .map(function(spec){
-            <<<li><code>#{spec.encode()}</code>
-<a href="#{base}?rid=#{spec{"rid"}}" target="_blank">make KRL</a>
-</li>
+            rid = spec{"rid"}
+            <<<tr>
+<td><code>#{rid}</code></td>
+<td>#{spec.get("name")}</td>
+<td>#{spec.get("rsname")}</td>
+<td>#{spec.get("event_domain")}</td>
+<td><a href="#{base}?rid=#{rid}" target="_blank">make KRL</a></td>
+</tr>
 >>
           })
       }
@@ -22,8 +27,15 @@ ruleset com.vcpnews.bazaar_apps {
       + <<
 <h1>Manage bazaar apps</h1>
 <h2>Apps</h2>
-<ul>
-#{li_apps().join("")}</ul>
+<table>
+<tr>
+<th>RID</th>
+<th>name</th>
+<th>rsname</th>
+<th>event domain</th>
+<th>boilerplate</th>
+</tr>
+#{li_apps().join("")}</table>
 <h2>New app</h2>
 <form action="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/new_app">
 <input name="rid" placeholder="RID"> e.x. my.special.guessing-app<br>
