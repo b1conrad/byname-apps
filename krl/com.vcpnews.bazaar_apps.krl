@@ -26,10 +26,10 @@ ruleset com.vcpnews.bazaar_apps {
 #{li_apps().join("")}</ul>
 <h2>New app</h2>
 <form action="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/new_app">
-<input name="rid" placeholder="RID"><br>
-<input name="home" placeholder="homepage"><br>
-<input name="rsname" placeholder="rsname"><br>
-<input name="event_domain" placeholder="event_domain"></br>
+<input name="rid" placeholder="RID"> e.x. my.special.guessing-app<br>
+<input name="home" placeholder="homepage"> e.x. guess<br>
+<input name="rsname" placeholder="rsname"> e.x. guesses<br>
+<input name="event_domain" placeholder="event_domain"> e.x. guessing_app<br>
 <button type="submit">Submit</button>
 </form>
 >>
