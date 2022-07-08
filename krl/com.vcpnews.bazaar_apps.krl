@@ -77,6 +77,7 @@ table input {
     shares #{home}
   }
   global {
+    event_domain = "#{event_domain}"
     #{home} = function(_headers){
       html:header("manage #{rsname}","",null,null,_headers)
       + <<
