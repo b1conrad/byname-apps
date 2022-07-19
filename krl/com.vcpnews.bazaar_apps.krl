@@ -131,14 +131,13 @@ table input {
       rid re#^(.+)$#
       home re#^(.+)$#
       rsname re#(.*)#
-      event_domain re#(.*)#
-      setting(rid,home,rsname,event_domain)
+      setting(rid,home,rsname)
     pre {
       spec = {
         "rid": rid,
         "name": home,
         "rsname": rsname || home,
-        "event_domain": event_domain || rid.replace(re#[.-]#g,"_")
+        "event_domain": rid.replace(re#[.-]#g,"_")
       }
     }
     fired {
