@@ -54,10 +54,10 @@ table input {
 #{li_apps().join("")}</table>
 <h2>New app</h2>
 <form action="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/new_app">
-<input name="rid" placeholder="Ruleset ID"> e.x. my.special.guessing-app (required)<br>
-<input name="home" placeholder="App Name"> e.x. guess (required)<br>
-<input name="rsname" placeholder="App meta name"> e.x. guesses (required)<br>
-<input name="event_domain" placeholder="event domain"> e.x. guessing_app (optional)<br>
+<input name="rid" placeholder="Ruleset ID" onchange="this.form.event_domain.value=this.value.replace(/[.-]/g,'_')" required size="40"> e.x. my.special.guessing-app<br>
+<input name="home" placeholder="App Name" required size="40"> e.x. guess<br>
+<input name="rsname" placeholder="App meta name" required size="40"> e.x. guesses<br>
+<input name="event_domain" readonly size="40" title="read-only"> (computed from RID)<br>
 <button type="submit">Submit</button>
 </form>
 >>
