@@ -15,9 +15,6 @@ td, th {
   border: 1px solid black;
   padding: 5px;
 }
-table input {
-  width: 90%;
-}
 input:invalid {
   border: 1px solid red;
 }
