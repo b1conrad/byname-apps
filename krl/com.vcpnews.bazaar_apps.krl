@@ -56,15 +56,19 @@ table input {
 <form action="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/new_app">
 <input name="rid" placeholder="Ruleset ID" onchange="this.form.event_domain.value=this.value.replace(/[.-]/g,'_')" required size="40" pattern="[a-zA-Z][a-zA-Z0-9._-]+">
 e.x. my.special.guessing-app
-[start with a letter; may contain letters, digits, underscores, dashes, and periods]<br>
+[start with a letter; may contain letters, digits, underscores, dashes, and periods]
+<br>
 <input name="home" placeholder="App Name" required size="40" pattern="[a-zA-Z][a-zA-Z0-9_]+">
 e.x. guess
-[start with a letter; may contain letters, digits, and underscores]<br>
+[start with a letter; may contain letters, digits, and underscores]
+<br>
 <input name="rsname" placeholder="App meta name" required size="40" pattern="[a-zA-Z][a-zA-Z0-9_]+">
 e.x. guesses
-[start with a letter; may contain letters, digits, and underscores]<br>
+[start with a letter; may contain letters, digits, and underscores]
+<br>
 <input name="event_domain" readonly size="40" title="read-only">
-(computed from RID)<br>
+(computed from RID)
+<br>
 <button type="submit">Submit</button>
 </form>
 >>
