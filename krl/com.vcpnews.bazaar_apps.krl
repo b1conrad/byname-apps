@@ -29,9 +29,9 @@ input:invalid {
             rid = spec{"rid"}
             <<<tr>
 <td><code>#{rid}</code></td>
-<td>#{spec.get("name")}</td>
-<td>#{spec.get("rsname")}</td>
-<td>#{spec.get("event_domain")}</td>
+<td><code>#{spec.get("name")}<code></td>
+<td><code>#{spec.get("rsname")}<code></td>
+<td><code>#{spec.get("event_domain")}<code></td>
 <td><a href="#{base}?rid=#{rid}" target="_blank">make KRL</a></td>
 <td><a href="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/app_not_wanted?rid=#{rid}" onclick="return confirm('This cannot be undone, and the app may be lost if you proceed.')">del</a></td>
 </tr>
