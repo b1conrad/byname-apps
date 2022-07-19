@@ -16,7 +16,7 @@ td, th {
   padding: 5px;
 }
 input:invalid {
-  border: 1px solid red;
+  border-color: red;
 }
 </style>
 >>
