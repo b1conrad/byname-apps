@@ -18,6 +18,9 @@ td, th {
 table input {
   width: 90%;
 }
+input:invalid {
+  border: 1px solid red;
+}
 </style>
 >>
     bazaar = function(_headers){
