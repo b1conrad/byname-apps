@@ -54,10 +54,14 @@ table input {
 #{li_apps().join("")}</table>
 <h2>New app</h2>
 <form action="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/new_app">
-<input name="rid" placeholder="Ruleset ID" onchange="this.form.event_domain.value=this.value.replace(/[.-]/g,'_')" required size="40"> e.x. my.special.guessing-app<br>
-<input name="home" placeholder="App Name" required size="40"> e.x. guess<br>
-<input name="rsname" placeholder="App meta name" required size="40"> e.x. guesses<br>
-<input name="event_domain" readonly size="40" title="read-only"> (computed from RID)<br>
+<input name="rid" placeholder="Ruleset ID" onchange="this.form.event_domain.value=this.value.replace(/[.-]/g,'_')" required size="40" pattern="[a-zA-Z][a-zA-Z0-9._-]+">
+e.x. my.special.guessing-app<br>
+<input name="home" placeholder="App Name" required size="40" pattern="[a-zA-Z][a-zA-Z0-9_]+">
+e.x. guess<br>
+<input name="rsname" placeholder="App meta name" required size="40" pattern="[a-zA-Z][a-zA-Z0-9_]+">
+e.x. guesses<br>
+<input name="event_domain" readonly size="40" title="read-only">
+(computed from RID)<br>
 <button type="submit">Submit</button>
 </form>
 >>
@@ -128,9 +132,9 @@ table input {
   }
   rule acceptNewApp {
     select when bazaar_apps new_app
-      rid re#^(.+)$#
-      home re#^(.+)$#
-      rsname re#(.*)#
+      rid re#^([a-zA-Z][a-zA-Z0-9._-]+)$#
+      home re#^([a-zA-Z][a-zA-Z0-9_]+)$#
+      rsname re#([a-zA-Z][a-zA-Z0-9_]*)#
       setting(rid,home,rsname)
     pre {
       spec = {
