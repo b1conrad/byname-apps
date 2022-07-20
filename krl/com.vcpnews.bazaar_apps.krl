@@ -115,7 +115,7 @@ e.x. guesses
 <div id="shadow" onclick="clearModal()"></div>
 <div id="modal">
   <button id="modal-close" onclick="clearModal()">&times;</button>
-  <pre id="modal-pre"></pre>
+  <pre id="modal-pre" onclick="selectAll(event)" title="click to select all"></pre>
 </div>
 
 <script type="text/javascript">
@@ -139,6 +139,16 @@ function shwk(event){
 function clearModal(){
   the_shadow.classList.remove('active');
   the_modal.classList.remove('active');
+}
+function selectAll(e){
+  e.preventDefault();
+  const range = document.createRange();
+  range.selectNodeContents(e.target);
+  const sel = window.getSelection();
+  if(sel){
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }
 }
 </script>
 >>
