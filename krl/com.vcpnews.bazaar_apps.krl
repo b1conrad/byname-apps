@@ -32,7 +32,7 @@ input:invalid {
 <td><code>#{spec.get("name")}</code></td>
 <td><code>#{spec.get("rsname")}</code></td>
 <td><code>#{spec.get("event_domain")}</code></td>
-<td><a href="#{base}?rid=#{rid}" target="_blank">make KRL</a></td>
+<td><a href="#{base}?rid=#{rid}" onclick="shwk(event);return false">make KRL</a></td>
 <td><a href="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/app_not_wanted?rid=#{rid}" onclick="return confirm('This cannot be undone, and the app may be lost if you proceed.')">del</a></td>
 </tr>
 >>
@@ -71,6 +71,68 @@ e.x. guesses
 <br>
 <button type="submit">Submit</button>
 </form>
+<style>
+#modal {
+  background-color: #F1F0EC;
+  position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%,-50%) scale(0);
+  width: 800px; max-width: 80%;
+  border: 1px solid black; border-radius: 10px;
+  transition: 300ms ease-in-out;
+}
+#modal.active {
+  transform: translate(-50%,-50%) scale(1);
+}
+#modal-close {
+  float: right; cursor: pointer;
+  border: none; background: none;
+  font-size: 1.25rem; font-weight: bold;
+}
+#modal-pre {
+  overflow: overlay;
+  padding: 0 5px;
+  background-color: #F1F0EC;
+}
+#shadow {
+  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,.5); opacity: 0;
+  pointer-events: none;
+  transition: 300ms ease-in-out;
+}
+#shadow.active {
+  opacity: 0.5;
+  pointer-events: all;
+}
+</style>
+<div id="shadow" onclick="clearModal()"></div>
+<div id="modal">
+  <button id="modal-close" onclick="clearModal()">&times;</button>
+  <pre id="modal-pre"></pre>
+</div>
+
+<script type="text/javascript">
+const the_modal_pre = document.getElementById('modal-pre');
+const the_modal = document.getElementById('modal');
+const the_shadow = document.getElementById('shadow');
+function shwk(event){
+  var xhr = new XMLHttpRequest;
+  xhr.onload = function(){
+    var data = xhr.response;
+    if(data && data.length){
+      the_modal_pre.textContent = data;
+      the_modal.classList.add('active');
+      the_shadow.classList.add('active');
+    }
+  }
+  xhr.onerror = function(){alert(xhr.responseText);}
+  xhr.open("GET",event.target.href,true);
+  xhr.send();
+}
+function clearModal(){
+  the_shadow.classList.remove('active');
+  the_modal.classList.remove('active');
+}
+</script>
 >>
       + html:footer()
     }
