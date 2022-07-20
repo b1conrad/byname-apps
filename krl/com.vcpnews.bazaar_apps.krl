@@ -15,6 +15,14 @@ td, th {
   border: 1px solid black;
   padding: 5px;
 }
+table a {
+  display: inline-block;
+  border: 1px solid black;
+  text-decoration: none;
+  padding: 5px;
+  border-radius: 5px;
+  color: black;
+}
 input:invalid {
   border-color: red;
 }
@@ -32,7 +40,7 @@ input:invalid {
 <td><code>#{spec.get("name")}</code></td>
 <td><code>#{spec.get("rsname")}</code></td>
 <td><code>#{spec.get("event_domain")}</code></td>
-<td><a href="#{base}?rid=#{rid}" onclick="shwk(event);return false">make KRL</a></td>
+<td><a href="#{base}?rid=#{rid}" onclick="shwk(event);return false">show KRL</a></td>
 <td><a href="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/app_not_wanted?rid=#{rid}" onclick="return confirm('This cannot be undone, and the app may be lost if you proceed.')">del</a></td>
 </tr>
 >>
