@@ -182,7 +182,7 @@ function selectAll(e){
     every {
       wrangler:createChannel(
         #{channel_tags},
-        {"allow":[{"domain":"#{event_domain}","name":"*"}],"deny":[]},
+        {"allow":[{"domain":event_domain,"name":"*"}],"deny":[]},
         {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
       )
     }
