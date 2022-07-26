@@ -362,11 +362,12 @@ It has #{child_count} child pico#{one_child => ": "+one_child{"name"} | "s"}.
   }
   rule openNewEditor {
     select when wrangler:new_child_created
+    event:send({"eci":event:attr("eci"),
+      "domain":"wrangler","type":"install_ruleset_request",
+      "attrs":event:attrs.put({"absoluteURL": meta:rulesetURI,"rid":"editor"})
+    })
     fired {
-      raise wrangler event "install_ruleset_request" attributes
-        event:attrs.put({
-          "absoluteURL": meta:rulesetURI,"rid":"editor"
-        })
+      raise introspect event "editor_installed"
     }
   }
 }
