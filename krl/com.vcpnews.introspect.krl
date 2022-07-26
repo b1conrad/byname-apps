@@ -186,12 +186,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
       + (apps >< rid => <<
 <br>
 <form action="#" onsubmit="return false" title="not implemented">
-<input type="hidden" name="src">
-<!--
-#{
-rs{["meta","krl"]}
-}
--->
+<input type="hidden" name="src" value="#{rs{["meta","krl"]}.math:base64encode()}">
 <button type="submit"#{editable_app => "" | << disabled title="not editable">>}>Edit app KRL</button>
 </form>
 >> | "")
