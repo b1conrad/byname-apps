@@ -134,6 +134,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
       source_hash = math:hash("sha256",source_krl)
       redden = source_hash == meta_hash => ""
                                          | << style="color:red">>
+      editable_app = rid != "byu.hr.record" && rid != "byu.hr.manage_apps"
       html:header(rid,"",null,null,_headers)
       + <<<h1>Your ruleset <code>#{rid}</code></h1>
 <table>
@@ -182,6 +183,12 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 </tr>
 </table>
 >>
+      + (apps >< rid => <<
+<form action="#" onsubmit="return false" title="not implemented">
+<input type="hidden" name="src">
+<button type="submit"#{editable_app => "" | << disabled title="not editable">>}>Edit app KRL</button>
+</form>
+>> | "")
       + html:footer()
     }
     channels = function(_headers){
