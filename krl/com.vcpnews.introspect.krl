@@ -367,10 +367,15 @@ It has #{child_count} child pico#{
   }
   rule openNewEditor {
     select when wrangler:new_child_created
-    event:send({"eci":event:attr("eci"),
-      "domain":"wrangler","type":"install_ruleset_request",
-      "attrs":event:attrs.put({"absoluteURL": meta:rulesetURI,"rid":"editor"})
-    })
+    pre {
+      child_eci = event:attr("eci")
+        .klog("child_eci")
+    }
+    if child_eci then
+      event:send({"eci":child_eci,
+        "domain":"wrangler","type":"install_ruleset_request",
+        "attrs":event:attrs.put({"absoluteURL": meta:rulesetURI,"rid":"editor"})
+      })
     fired {
       raise introspect event "editor_installed" // redirect to editor
     }
