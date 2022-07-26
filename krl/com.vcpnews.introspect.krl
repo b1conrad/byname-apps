@@ -134,6 +134,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
       source_hash = math:hash("sha256",source_krl)
       redden = source_hash == meta_hash => ""
                                          | << style="color:red">>
+      editURL = <<#{meta:host}/sky/event/#{meta:eci}/none/introspect/app_needs_edit>>
       editable_app = rid != "byu.hr.record" && rid != "byu.hr.manage_apps"
       html:header(rid,"",null,null,_headers)
       + <<<h1>Your ruleset <code>#{rid}</code></h1>
@@ -185,7 +186,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 >>
       + (apps >< rid => <<
 <br>
-<form action="#" onsubmit="return false" title="not implemented">
+<form action="#{editURL}">
 <input type="hidden" name="src" value="#{rs{["meta","krl"]}.math:base64encode()}">
 <button type="submit"#{editable_app => "" | << disabled title="not editable">>}>Edit app KRL</button>
 </form>
