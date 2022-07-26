@@ -347,8 +347,11 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
     fired {
     }
     else {
-      raise wrangler event "wrangler:new_child_request" attributes
+      raise wrangler event "new_child_request" attributes
         event:attrs.put("name",editor_name)
     }
+  }
+  rule openNewEditor {
+    select when wrangler:new_child_created
   }
 }
