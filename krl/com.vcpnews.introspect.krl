@@ -330,4 +330,23 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
     foreach wrangler:channels("introspections").reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
+  rule createEditorChildIfNeeded {
+    select when introspect app_needs_edit
+      src re#(.+)# setting(src)
+    pre {
+      children = wrangler:children()
+      netid = wrangler:name()
+      editor_name = netid+"/bazaar"
+      editor = children.filter(function(c){
+        c{"name"} == editor_name
+      })
+    }
+    if editor then noop() // send it an edit event
+    fired {
+    }
+    else {
+      raise wrangler event "wrangler:new_child_request" attributes
+        event:attrs.put("name",editor_name)
+    }
+  }
 }
