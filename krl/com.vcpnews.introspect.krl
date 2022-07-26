@@ -337,9 +337,11 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
       children = wrangler:children()
       netid = wrangler:name()
       editor_name = netid+"/bazaar"
-      editor = children.filter(function(c){
-        c{"name"} == editor_name
-      })
+      editor = children
+        .filter(function(c){
+          c{"name"} == editor_name
+        })
+        .head()
     }
     if editor then noop() // send it an edit event
     fired {
