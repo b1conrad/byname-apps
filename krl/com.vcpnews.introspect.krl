@@ -354,7 +354,7 @@ It has #{child_count} child pico#{
       eci = function(){
         editor => wrangler:picoQuery(editor{"eci"}.klog("eci"),editor_rid,"pico_eci") | null
       }
-      url = <<#{meta:host}/sky/query/#{eci()}/#{editor_rid}/krl.txt>>
+      url = <<#{meta:host}/sky/cloud/#{eci()}/#{editor_rid}/krl.txt>>
     }
     if editor then // noop() // send it an edit event
       send_directive("_redirect",{"url":url})
