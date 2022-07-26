@@ -354,7 +354,7 @@ It has #{child_count} child pico#{
       eci = function(){
         editor => wrangler:picoQuery(editor{"eci"}.klog("eci"),editor_rid,"pico_eci") | null
       }
-      url = <<#{meta:host}/sky/query/#{eci()}/editor_rid/krl.txt>>
+      url = <<#{meta:host}/sky/query/#{eci()}/#{editor_rid}/krl.txt>>
     }
     if editor then // noop() // send it an edit event
       send_directive("_redirect",{"url":url})
@@ -370,11 +370,14 @@ It has #{child_count} child pico#{
     pre {
       child_eci = event:attr("eci")
         .klog("child_eci")
+      editor_rid = "com.vcpnews.editor"
     }
     if child_eci then
       event:send({"eci":child_eci,
         "domain":"wrangler","type":"install_ruleset_request",
-        "attrs":event:attrs.put({"absoluteURL": meta:rulesetURI,"rid":"editor"})
+        "attrs":event:attrs.put(
+          {"absoluteURL": meta:rulesetURI,"rid":editor_rid}
+        )
       })
     fired {
       raise introspect event "editor_installed" // redirect to editor
