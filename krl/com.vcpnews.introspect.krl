@@ -19,6 +19,7 @@ ruleset com.vcpnews.introspect {
       ss_link = <<#{subs_count} <a href="subscriptions.html">subscription#{subs_count==1 => "" | "s"}</a\>>>
       child_count = wrangler:children().length()
       one_child = wrangler:children().head()
+      child_eci = one_child{"eci"}
       html:header("manage introspections","",null,null,_headers)
       + <<
 <h1>Manage introspections</h1>
@@ -32,7 +33,11 @@ The apps can be managed with #{app_url("byu.hr.manage_apps")}.</p>
 <p>It has #{subs_count => ss_link | "no subscriptions"}.
 These can be managed with #{app_url("byu.hr.relate")}.</p>
 <p>
-It has #{child_count} child pico#{one_child => ": "+one_child{"name"} | "s"}.
+It has #{child_count} child pico#{
+  one_child => <<: #{one_child{"name"}}
+<a href="#{meta:host}/sky/event/#{meta:eci}/none/wrangler/child_deletion_request?eci=#{child_eci}">del</a>.
+>> | "s."
+}
 </p>
 <h2>Technical</h2>
 <button disabled title="not yet implemented">export</button>
@@ -367,7 +372,7 @@ It has #{child_count} child pico#{one_child => ": "+one_child{"name"} | "s"}.
       "attrs":event:attrs.put({"absoluteURL": meta:rulesetURI,"rid":"editor"})
     })
     fired {
-      raise introspect event "editor_installed"
+      raise introspect event "editor_installed" // redirect to editor
     }
   }
 }
