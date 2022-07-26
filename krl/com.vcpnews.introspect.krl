@@ -345,8 +345,14 @@ It has #{child_count} child pico#{one_child => ": "+one_child{"name"} | "s"}.
           c{"name"} == editor_name
         })
         .head()
+      editor_rid = "com.vcpnews.editor"
+      eci = function(){
+        editor => wrangler:picoQuery(editor{"eci"}.klog("eci"),editor_rid,"pico_eci") | null
+      }
+      url = <<#{meta:host}/sky/query/#{eci()}/editor_rid/krl.txt>>
     }
-    if editor then noop() // send it an edit event
+    if editor then // noop() // send it an edit event
+      send_directive("_redirect",{"url":url})
     fired {
     }
     else {
