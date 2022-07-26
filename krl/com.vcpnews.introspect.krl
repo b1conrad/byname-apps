@@ -35,7 +35,7 @@ These can be managed with #{app_url("byu.hr.relate")}.</p>
 <p>
 It has #{child_count} child pico#{
   one_child => <<: #{one_child{"name"}}
-<a href="#{meta:host}/sky/event/#{meta:eci}/none/wrangler/child_deletion_request?eci=#{child_eci}">del</a>.
+<a href="#{meta:host}/sky/event/#{meta:eci}/none/introspect/child_pico_not_needed?eci=#{child_eci}">del</a>.
 >> | "s."
 }
 </p>
@@ -373,6 +373,17 @@ It has #{child_count} child pico#{
     })
     fired {
       raise introspect event "editor_installed" // redirect to editor
+    }
+  }
+  rule deleteChildPico {
+    select when introspect child_pico_not_needed
+      eci re#(.+)# setting(eci)
+    pre {
+      referrer = event:attr("_headers").get("referer") // [sic]
+    }
+    send_directive("_redirect",{"url":referrer})
+    fired {
+      raise wrangler event "child_deletion_request" attributes {"eci":eci}
     }
   }
 }
