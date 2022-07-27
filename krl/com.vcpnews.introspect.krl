@@ -344,43 +344,42 @@ It has #{child_count} child pico#{
     pre {
       children = wrangler:children()
       netid = wrangler:name()
-      editor_name = netid+"/bazaar"
-      editor = children
+      repo_name = netid+"/bazaar"
+      repo = children
         .filter(function(c){
-          c{"name"} == editor_name
+          c{"name"} == repo_name
         })
         .head()
-      editor_rid = "com.vcpnews.editor"
+      repo_rid = "com.vcpnews.repo"
       eci = function(){
-        editor => wrangler:picoQuery(editor{"eci"}.klog("eci"),editor_rid,"pico_eci") | null
+        repo => wrangler:picoQuery(repo{"eci"},repo_rid,"pico_eci") | null
       }
-      url = <<#{meta:host}/sky/cloud/#{eci()}/#{editor_rid}/krl.txt>>
+      url = <<#{meta:host}/sky/cloud/#{eci()}/#{repo_rid}/krl.txt>>
     }
-    if editor then // noop() // send it an edit event
+    if repo then // noop() // send it an edit event
       send_directive("_redirect",{"url":url})
     fired {
     }
     else {
       raise wrangler event "new_child_request" attributes
-        event:attrs.put("name",editor_name)
+        event:attrs.put("name",repo_name)
     }
   }
   rule openNewEditor {
     select when wrangler:new_child_created
     pre {
       child_eci = event:attr("eci")
-        .klog("child_eci")
-      editor_rid = "com.vcpnews.editor"
+      repo_rid = "com.vcpnews.repo"
     }
     if child_eci then
       event:send({"eci":child_eci,
         "domain":"wrangler","type":"install_ruleset_request",
         "attrs":event:attrs.put(
-          {"absoluteURL": meta:rulesetURI,"rid":editor_rid}
+          {"absoluteURL": meta:rulesetURI,"rid":repo_rid}
         )
       })
     fired {
-      raise introspect event "editor_installed" // redirect to editor
+      raise introspect event "repo_installed" // redirect to repo
     }
   }
   rule deleteChildPico {
