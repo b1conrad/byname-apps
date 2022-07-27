@@ -1,4 +1,4 @@
-ruleset com.vcpnews.editor {
+ruleset com.vcpnews.repo {
   meta {
     use module io.picolabs.wrangler alias wrangler
     shares krl, pico_eci
@@ -10,8 +10,8 @@ ruleset com.vcpnews.editor {
     pico_eci = function(){
       ent:eci
     }
-    event_domain = "introspect_editor"
-    tags = ["introspect","editor"]
+    event_domain = "introspect_repo"
+    tags = ["introspect","repo"]
   }
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
@@ -23,13 +23,13 @@ ruleset com.vcpnews.editor {
       ) setting(channel)
     }
     fired {
-      raise introspect_editor event "channel_created"
+      raise introspect_repo event "channel_created"
       ent:src := event:attr("src").math:base64decode()
       ent:eci := channel{"id"}
     }
   }
   rule keepChannelsClean {
-    select when introspect_editor channel_created
+    select when introspect_repo channel_created
     foreach wrangler:channels(tags).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
