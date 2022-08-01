@@ -2,7 +2,7 @@ ruleset com.vcpnews.ruleset {
   meta {
     use module io.picolabs.wrangler alias wrangler
     use module com.vcpnews.introspect alias intro
-    use module byu.hr.html alias html
+    use module html.byu alias html
     shares rulesets, ruleset
   }
   global {
