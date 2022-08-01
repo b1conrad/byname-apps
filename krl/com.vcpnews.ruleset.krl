@@ -1,7 +1,7 @@
 ruleset com.vcpnews.ruleset {
   meta {
     use module io.picolabs.wrangler alias wrangler
-    use module com.vcpnews.introspection alias intro
+    use module com.vcpnews.introspect alias intro
     shares rulesets, ruleset
   }
   global {
