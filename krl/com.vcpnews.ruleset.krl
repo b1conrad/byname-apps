@@ -2,6 +2,7 @@ ruleset com.vcpnews.ruleset {
   meta {
     use module io.picolabs.wrangler alias wrangler
     use module com.vcpnews.introspect alias intro
+    use module byu.hr.html alias html
     shares rulesets, ruleset
   }
   global {
@@ -11,7 +12,6 @@ ruleset com.vcpnews.ruleset {
       function(a,b){a{key}.encode() cmp b{key}.encode()}
     }
     rulesets = function(_headers){
-log = _headers.klog("_headers")
       xref = module_usage()
       deet = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/ruleset.html?rid=>>
       apps = html:cookies(_headers){"apps"}.split(",")
@@ -34,7 +34,6 @@ log = _headers.klog("_headers")
 </tr>
 >>
       }
-where = "".klog("before html:header")
       html:header("Your rulesets","",null,null,_headers)
       + <<<h1>Your rulesets</h1>
 <table>
