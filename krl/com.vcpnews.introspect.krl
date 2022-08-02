@@ -191,6 +191,9 @@ It has #{child_count} child pico#{
     }
     fired {
       raise introspect event "channel_created"
+      raise wrangler event "install_ruleset_request" attributes {
+        "absoluteURL":meta:rulesetURI,"rid":rsRID,
+      }
     }
   }
   rule keepChannelsClean {
