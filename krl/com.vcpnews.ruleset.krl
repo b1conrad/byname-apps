@@ -209,4 +209,12 @@ ruleset com.vcpnews.ruleset {
       raise wrangler event "child_deletion_request" attributes {"eci":eci}
     }
   }
+  rule deleteThisRuleset {
+    select when byu_hr_manage_apps app_unwanted
+      rid re#^com.vcpnews.introspect$#
+    fired {
+      raise wrangler event "uninstall_ruleset_request"
+        attributes event:attrs.put("rid",meta:rid)
+    }
+  }
 }
