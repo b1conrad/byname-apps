@@ -94,7 +94,7 @@ ruleset com.vcpnews.ruleset {
       source_hash = math:hash("sha256",source_krl)
       redden = source_hash == meta_hash => ""
                                          | << style="color:red">>
-      editURL = <<#{meta:host}/sky/event/#{meta:eci}/none/introspect/app_needs_edit>>
+      editURL = <<#{meta:host}/sky/event/#{meta:eci}/none/ruleset/app_needs_edit>>
       editable_app = rid != "byu.hr.record" && rid != "byu.hr.manage_apps"
       html:header(rid,"",null,null,_headers)
       + <<<h1>Your ruleset <code>#{rid}</code></h1>
@@ -152,6 +152,61 @@ ruleset com.vcpnews.ruleset {
 </form>
 >> | "")
       + html:footer()
+    }
+  }
+  rule createEditorChildIfNeeded {
+    select when ruleset app_needs_edit
+      src re#(.+)# setting(src)
+    pre {
+      children = wrangler:children()
+      netid = wrangler:name()
+      repo_name = netid+"/bazaar"
+      repo = children
+        .filter(function(c){
+          c{"name"} == repo_name
+        })
+        .head()
+      repo_rid = "com.vcpnews.repo"
+      eci = function(){
+        repo => wrangler:picoQuery(repo{"eci"},repo_rid,"pico_eci") | null
+      }
+      url = <<#{meta:host}/sky/cloud/#{eci()}/#{repo_rid}/krl.txt>>
+    }
+    if repo then // noop() // send it an edit event
+      send_directive("_redirect",{"url":url})
+    fired {
+    }
+    else {
+      raise wrangler event "new_child_request" attributes
+        event:attrs.put("name",repo_name)
+    }
+  }
+  rule openNewEditor {
+    select when wrangler:new_child_created
+    pre {
+      child_eci = event:attr("eci")
+      repo_rid = "com.vcpnews.repo"
+    }
+    if child_eci then
+      event:send({"eci":child_eci,
+        "domain":"wrangler","type":"install_ruleset_request",
+        "attrs":event:attrs.put(
+          {"absoluteURL": meta:rulesetURI,"rid":repo_rid}
+        )
+      })
+    fired {
+      raise ruleset event "repo_installed" // redirect to repo
+    }
+  }
+  rule deleteChildPico {
+    select when ruleset child_pico_not_needed
+      eci re#(.+)# setting(eci)
+    pre {
+      referrer = event:attr("_headers").get("referer") // [sic]
+    }
+    send_directive("_redirect",{"url":referrer})
+    fired {
+      raise wrangler event "child_deletion_request" attributes {"eci":eci}
     }
   }
 }
