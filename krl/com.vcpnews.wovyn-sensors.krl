@@ -3,7 +3,7 @@ ruleset com.vcpnews.wovyn-sensors {
     name "wovyn_sensors"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    shares wovyn_sensor
+    shares wovyn_sensor, history
   }
   global {
     event_domain = "com_vcpnews_wovyn_sensors"
@@ -24,15 +24,15 @@ ruleset com.vcpnews.wovyn-sensors {
       parts = ts.split(re#[T.]#)
       parts.filter(function(v,i){i<2}).join(" ")
     }
-    wovyn_sensor = function(_headers){
-      temps = function(a,tt,i){
-        a+(i%2==0 => <<<tr>
+    temps = function(a,tt,i){
+      a+(i%2==0 => <<<tr>
 <td title="#{tt}">#{tt.makeMT().ts_format()}</td>
 >> | <<
 <td>#{tt}°F</td>
 </tr>
 >>)
-      }
+    }
+    wovyn_sensor = function(_headers){
       one_sensor = function(v,k){
         <<<h2 title="#{k}">#{mapping{k}}</h2>
 <table>
@@ -40,8 +40,9 @@ ruleset com.vcpnews.wovyn-sensors {
 <th>Timestamp</th>
 <th>Temperature</th>
 </tr>
-#{v.reduce(temps,"").join("")}
+#{v.slice(v.length()-2,2).reduce(temps,"").join("")}
 </table>
+<a href="history.html?name=#{k}">history</a>
 >>
       }
       html:header("manage wovyn_sensors","",null,null,_headers)
@@ -50,6 +51,22 @@ ruleset com.vcpnews.wovyn-sensors {
 #{ent:record.map(one_sensor).values().join("")}
 >>
       + html:footer()
+    }
+    history = function(name,_headers){
+      html:header("sensor "+name,"",null,null,_headers)
+      + <<
+<h1>sensor #{name}</h1>
+<h2>#{mapping{name}}</h2>
+<table>
+<tr>
+<th>Timestamp</th>
+<th>Temperature</th>
+</tr>
+#{ent:record{name}.reduce(temps,"").join("")}
+</table>
+>>
+      + html:footer()
+    
     }
   }
   rule initialize {
