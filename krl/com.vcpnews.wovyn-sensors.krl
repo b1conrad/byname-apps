@@ -34,13 +34,14 @@ ruleset com.vcpnews.wovyn-sensors {
     }
     wovyn_sensor = function(_headers){
       one_sensor = function(v,k){
+        vlen = v.length()
         <<<h2 title="#{k}">#{mapping{k}}</h2>
 <table>
 <tr>
 <th>Timestamp</th>
 <th>Temperature</th>
 </tr>
-#{v.slice(v.length()-2,2).reduce(temps,"").join("")}
+#{v.slice(vlen-2,vlen-1).reduce(temps,"").join("")}
 </table>
 <a href="history.html?name=#{k}">history</a>
 >>
