@@ -9,15 +9,15 @@ ruleset com.vcpnews.wovyn-sensors {
     event_domain = "com_vcpnews_wovyn_sensors"
     wovyn_sensor = function(_headers){
       temps = function(a,tt,i){
-        a+(i%2 => <<<tr>
-<td>tt</td>
+        a+(i%2==0 => <<<tr>
+<td>#{tt}</td>
 >> | <<
-<td>tt</td>
+<td>#{tt}</td>
 </tr>
 >>)
       }
       one_sensor = function(v,k){
-        <<<h2>k</h2>
+        <<<h2>#{k}</h2>
 <table>
 <tr>
 <th>Timestamp</th>
