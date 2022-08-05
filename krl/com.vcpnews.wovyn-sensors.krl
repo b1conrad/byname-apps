@@ -11,6 +11,7 @@ ruleset com.vcpnews.wovyn-sensors {
       html:header("manage wovyn_sensors","",null,null,_headers)
       + <<
 <h1>Manage wovyn_sensors</h1>
+ent:record.encode()
 >>
       + html:footer()
     }
@@ -32,5 +33,25 @@ ruleset com.vcpnews.wovyn-sensors {
     select when com_vcpnews_wovyn_sensors factory_reset
     foreach wrangler:channels(["wovyn_sensors"]).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
+  }
+  rule prepare {
+    select when com_vcpnews_wovyn_sensors heartbeat
+      where ent:record.isnull()
+    fired {
+      ent:record := {}
+    }
+  }
+  rule acceptHeartbeat {
+    select when com_vcpnews_wovyn_sensors heartbeat
+      eventDomain re#^wovyn.emitter$#
+    pre {
+      device = event:attrs{["property","name"]}
+      temps = event:attrs{["genericThing","data","temperature"]}
+      tempF = temps.head(){"temperatureF"}
+      record = ent:record{device}.defaultsTo([]).append([time:now(),tempF])
+    }
+    fired {
+      ent:record{device} := record
+    }
   }
 }
