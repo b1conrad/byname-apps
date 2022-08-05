@@ -7,6 +7,12 @@ ruleset com.vcpnews.wovyn-sensors {
   }
   global {
     event_domain = "com_vcpnews_wovyn_sensors"
+    mapping = {
+      "Wovyn_2BD707": "Attic East",
+      "Wovyn_162EB3": "Attic West",
+      "Wovyn_163ECD": "Kitchen",
+      "Wovyn_746ABF": "Patio",
+    }
     makeMT = function(ts){
       MST = time:add(ts,{"hours": -7});
       MDT = time:add(ts,{"hours": -6});
@@ -28,7 +34,7 @@ ruleset com.vcpnews.wovyn-sensors {
 >>)
       }
       one_sensor = function(v,k){
-        <<<h2>#{k}</h2>
+        <<<h2 title="#{k}">#{mapping{k}}</h2>
 <table>
 <tr>
 <th>Timestamp</th>
