@@ -8,12 +8,29 @@ ruleset com.vcpnews.wovyn-sensors {
   global {
     event_domain = "com_vcpnews_wovyn_sensors"
     wovyn_sensor = function(_headers){
+      temps = function(a,tt,i){
+        a+(i%2 => <<<tr>
+<td>tt</td>
+>> | <<
+<td>tt</td>
+</tr>
+>>)
+      }
+      one_sensor = function(v,k){
+        <<<h2>k</h2>
+<table>
+<tr>
+<th>Timestamp</th>
+<th>Temperature</th>
+</tr>
+#{v.reduce(temps,"").join("")}
+</table>
+>>
+      }
       html:header("manage wovyn_sensors","",null,null,_headers)
       + <<
 <h1>Manage wovyn_sensors</h1>
-#{
-ent:record.encode()
-}
+#{ent:record.map(one_sensor).values().join("")}
 >>
       + html:footer()
     }
