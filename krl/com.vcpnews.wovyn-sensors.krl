@@ -11,7 +11,9 @@ ruleset com.vcpnews.wovyn-sensors {
       html:header("manage wovyn_sensors","",null,null,_headers)
       + <<
 <h1>Manage wovyn_sensors</h1>
+#{
 ent:record.encode()
+}
 >>
       + html:footer()
     }
