@@ -122,4 +122,16 @@ ruleset com.vcpnews.wovyn-sensors {
       ent:record{device} := record
     }
   }
+  rule pruneList {
+    select when com_vcpnews_wovyn_sensors prune_needed
+      where ent:record.keys() >< event:attr("name")
+    pre {
+      device = event:attr("name")
+      cutoff = event:attr("cutoff")
+      new_list = ent:record{device}.pruned_list(cutoff)
+    }
+    fired {
+      ent:record{device} := new_list
+    }
+  }
 }
