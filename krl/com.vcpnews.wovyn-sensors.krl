@@ -53,7 +53,15 @@ ruleset com.vcpnews.wovyn-sensors {
 >>
       + html:footer()
     }
-    history = function(name,_headers){
+    cutoff_index = function(list,cutoff_date){
+      0
+    }
+    pruned_list = function(list,cutoff_date){
+      index = cutoff_date => list.cutoff_index(cutoff_date) | 0
+      sanity = (index%2==0).klog("index even?")
+      sanity => list.slice(index,list.length()-1) | list
+    }
+    history = function(name,cutoff,_headers){
       html:header("sensor "+name,"",null,null,_headers)
       + <<
 <h1>sensor #{name}</h1>
@@ -63,7 +71,7 @@ ruleset com.vcpnews.wovyn-sensors {
 <th>Timestamp</th>
 <th>Temperature</th>
 </tr>
-#{ent:record{name}.reduce(temps,"").join("")}
+#{ent:record{name}.pruned_list(cutoff).reduce(temps,"").join("")}
 </table>
 >>
       + html:footer()
