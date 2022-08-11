@@ -54,7 +54,13 @@ ruleset com.vcpnews.wovyn-sensors {
       + html:footer()
     }
     cutoff_index = function(list,cutoff_date){
-      0
+      find_index = function(answer,v,i){
+        answer >= 0      => answer | // already found cutoff
+        i%2              => answer | // temp value
+        v < cutoff_date  => answer | // date before cutoff
+                            i        // cutoff index
+      }
+      list.reduce(find_index,-1)
     }
     pruned_list = function(list,cutoff_date){
       index = cutoff_date => list.cutoff_index(cutoff_date) | 0
