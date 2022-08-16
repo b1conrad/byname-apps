@@ -23,8 +23,10 @@ ruleset com.vcpnews.wovyn-sensors {
       ent:record
         .values()
         .map(function(list){list.filter(firstHour)})
-        .reduce(append,[])
+
+        //.reduce(append,[])
         //.filter(firstHour)
+
         .encode()
     }
     makeMT = function(ts){
