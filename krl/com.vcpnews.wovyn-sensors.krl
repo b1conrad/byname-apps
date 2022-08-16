@@ -4,6 +4,7 @@ ruleset com.vcpnews.wovyn-sensors {
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
     shares wovyn_sensor, history, export_tsv
+,daysData
   }
   global {
     event_domain = "com_vcpnews_wovyn_sensors"
@@ -12,6 +13,13 @@ ruleset com.vcpnews.wovyn-sensors {
       "Wovyn_162EB3": "Attic West",
       "Wovyn_163ECD": "Kitchen",
       "Wovyn_746ABF": "Porch",
+    }
+    daysData = function(){
+      ent:record
+        .values()
+        .reduce(append,[])
+        .filter(function(v,i){i%2==0 && v.match(re#T06:0#)})
+        .encode()
     }
     makeMT = function(ts){
       MST = time:add(ts,{"hours": -7});
@@ -51,7 +59,7 @@ ruleset com.vcpnews.wovyn-sensors {
 <h1>Manage wovyn_sensors</h1>
 #{ent:record.map(one_sensor).values().join("")}
 <h2>Operations</h2>
-<a href="export_tsv.txt">export</a>
+<a href="export_tsv.txt" target="_blank">export</a>
 <br>
 <form action="#{meta:host}/sky/event/#{meta:eci}/prune/#{event_domain}/prune_all_needed">
 <input name="cutoff" placeholder="20220816T06">
