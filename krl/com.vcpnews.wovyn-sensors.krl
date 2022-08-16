@@ -90,13 +90,14 @@ ruleset com.vcpnews.wovyn-sensors {
         }
         list.reduce(tts,"")
       }
-      hdr = ["Timestamp"].append(mapping.values().reverse()).join("\t")
+      hdr = ["Timestamp"].append(mapping.values().reverse()).join(chr(9))
       lines = mapping.keys().reverse().map(function(k,i){
         tab_char = function(x){chr(9)}
         tabs = 0.range(i).map(tab_char).join("")
         ent:record{k}.one_device(tabs)
       }).join("").split(chr(10)).sort().join(chr(10))
-      hdr + chr(10) + lines
+      hdr
+      + lines
     }
   }
   rule initialize {
