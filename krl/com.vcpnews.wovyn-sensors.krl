@@ -134,4 +134,15 @@ ruleset com.vcpnews.wovyn-sensors {
       ent:record{device} := new_list
     }
   }
+  rule pruneAllLists {
+    select when com_vcpnews_wovyn_sensors prune_all_needed
+      cutoff re#^(202\d-\d\d-\d\dT0\d)# setting(cutoff)
+    foreach mapping.keys() setting(device)
+    pre {
+      new_list = ent:record{device}.pruned_list(cutoff)
+    }
+    fired {
+      ent:record{device} := new_list
+    }
+  }
 }
