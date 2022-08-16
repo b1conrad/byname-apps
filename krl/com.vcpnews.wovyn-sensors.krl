@@ -3,7 +3,7 @@ ruleset com.vcpnews.wovyn-sensors {
     name "wovyn_sensors"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    shares wovyn_sensor, history
+    shares wovyn_sensor, history, export_tsv
   }
   global {
     event_domain = "com_vcpnews_wovyn_sensors"
@@ -82,6 +82,19 @@ ruleset com.vcpnews.wovyn-sensors {
 >>
       + html:footer()
     
+    }
+    export_tsv = function(){
+      one_device = function(list,tabs){
+        tts = function(a,tt,i){
+          a+(i%2==0 => tt.makeMT().ts_format() + tabs | tt + chr(10))
+        }
+        list.reduce(tts,"")
+      }
+      mapping.keys().reverse().map(function(k,i){
+        tab_char = function(x){chr(9)}
+        tabs = 0.range(i).map(tab_char).join("")
+        ent:record{k}.one_device(tabs).join("")
+      })
     }
   }
   rule initialize {
