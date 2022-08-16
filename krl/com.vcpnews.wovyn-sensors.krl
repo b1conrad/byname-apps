@@ -50,6 +50,13 @@ ruleset com.vcpnews.wovyn-sensors {
       + <<
 <h1>Manage wovyn_sensors</h1>
 #{ent:record.map(one_sensor).values().join("")}
+<h2>Operations</h2>
+<a href="export_tsv.txt">export</a>
+<br>
+<form action="#{meta:host}/sky/event/#{meta:eci}/prune/#{event_domain}/prune_all_needed">
+<input name="cutoff" placeholder="20220816T06">
+<button type="submit">Prune</button>
+</form>
 >>
       + html:footer()
     }
