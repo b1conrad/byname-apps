@@ -93,8 +93,8 @@ ruleset com.vcpnews.wovyn-sensors {
       mapping.keys().reverse().map(function(k,i){
         tab_char = function(x){chr(9)}
         tabs = 0.range(i).map(tab_char).join("")
-        ent:record{k}.one_device(tabs).join("")
-      })
+        ent:record{k}.one_device(tabs)
+      }).join("")
     }
   }
   rule initialize {
