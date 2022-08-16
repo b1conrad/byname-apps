@@ -15,14 +15,15 @@ ruleset com.vcpnews.wovyn-sensors {
       "Wovyn_746ABF": "Porch",
     }
     daysData = function(){
-huh =
+      firstHour = function(v,i){
+        i%2==0
+        &&
+        v.encode().decode().match(re#T06#)
+      }
       ent:record
         .values()
         .reduce(append,[])
-len = huh.length().klog("length")
-huh
-        .filter(function(v,i){
-          i%2==0 && v.encode().decode().match(re#T06:0#)})
+        .filter(firstHour)
         .encode()
     }
     makeMT = function(ts){
