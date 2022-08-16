@@ -21,10 +21,14 @@ ruleset com.vcpnews.wovyn-sensors {
         v.encode().decode().match(re#T06#)
       }
       flatten = function(a,v){a.append(v)}
+      justDate = function(t){t.split("T").head()}
+      formSet = function(a,t){a.union(t)}
       ent:record
         .values()
         .map(function(list){list.filter(firstHour)})
         .reduce(flatten,[])
+        .map(justDate)
+        .reduce(formSet,[])
         .encode()
     }
     makeMT = function(ts){
