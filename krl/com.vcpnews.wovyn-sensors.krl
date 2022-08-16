@@ -11,7 +11,7 @@ ruleset com.vcpnews.wovyn-sensors {
       "Wovyn_2BD707": "Attic East",
       "Wovyn_162EB3": "Attic West",
       "Wovyn_163ECD": "Kitchen",
-      "Wovyn_746ABF": "Patio",
+      "Wovyn_746ABF": "Porch",
     }
     makeMT = function(ts){
       MST = time:add(ts,{"hours": -7});
@@ -90,11 +90,13 @@ ruleset com.vcpnews.wovyn-sensors {
         }
         list.reduce(tts,"")
       }
-      mapping.keys().reverse().map(function(k,i){
+      hdr = ["Timestamp"].append(mapping.values().reverse()).join("\t")
+      lines = mapping.keys().reverse().map(function(k,i){
         tab_char = function(x){chr(9)}
         tabs = 0.range(i).map(tab_char).join("")
         ent:record{k}.one_device(tabs)
-      }).join("")
+      }).join("").split(chr(10)).sort().join(chr(10))
+      hdr + chr(10) + lines
     }
   }
   rule initialize {
