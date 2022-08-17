@@ -74,7 +74,9 @@ ruleset com.vcpnews.wovyn-sensors {
 <select name="cutoff" id="cutoff" required>
 #{daysData().map(function(d){
   <<<option value="#{d}T06">#{d}</option>
->>})}
+>>})
+  .join("")
+}
 </select>
 <button type="submit">Prune</button>
 </form>
