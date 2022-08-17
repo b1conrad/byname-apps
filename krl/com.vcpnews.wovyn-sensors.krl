@@ -191,4 +191,11 @@ daysData().map(function(d){
       ent:record{device} := new_list
     }
   }
+  rule redirectBack {
+    select when com_vcpnews_wovyn_sensors prune_all_needed
+    pre {
+      referrer = event:attr("_headers").get("referer") // sic
+    }
+    if referrer then send_directive("_redirect",{"url":referrer})
+  }
 }
