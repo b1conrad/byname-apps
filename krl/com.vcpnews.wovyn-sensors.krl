@@ -4,7 +4,6 @@ ruleset com.vcpnews.wovyn-sensors {
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
     shares wovyn_sensor, history, export_tsv
-,daysData
   }
   global {
     event_domain = "com_vcpnews_wovyn_sensors"
@@ -14,11 +13,11 @@ ruleset com.vcpnews.wovyn-sensors {
       "Wovyn_163ECD": "Kitchen",
       "Wovyn_746ABF": "Porch",
     }
-    daysData = function(){
+    daysData = function(){ // finds all dates in the data
       firstHour = function(v,i){
         i%2==0
         &&
-        v.encode().decode().match(re#T06#)
+        v.encode().decode().match(re#T06#) // assuming MDT
       }
       flatten = function(a,v){a.append(v)}
       justDate = function(t){t.split("T").head()}
@@ -72,7 +71,12 @@ ruleset com.vcpnews.wovyn-sensors {
 <a href="export_tsv.txt" target="_blank">export</a>
 <br>
 <form action="#{meta:host}/sky/event/#{meta:eci}/prune/#{event_domain}/prune_all_needed">
-<input name="cutoff" placeholder="20220816T06">
+<label for="cutoff">Choose a date to prune before:</label>
+<select name="cutoff" id="cutoff" required>
+#{daysData().map(function(d){
+  <<<option value="#{d}T06">#{d}</option>
+>>})}
+</select>
 <button type="submit">Prune</button>
 </form>
 >>
