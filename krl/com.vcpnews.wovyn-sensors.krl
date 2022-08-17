@@ -72,12 +72,12 @@ ruleset com.vcpnews.wovyn-sensors {
 <form action="#{meta:host}/sky/event/#{meta:eci}/prune/#{event_domain}/prune_all_needed">
 <label for="cutoff">Choose a date to prune before:</label>
 <select name="cutoff" id="cutoff" required>
-#{daysData().map(function(d){
+#{
+daysData().map(function(d){
   <<<option value="#{d}T06">#{d}</option>
 >>})
   .join("")
-}
-</select>
+}</select>
 <button type="submit">Prune</button>
 </form>
 >>
