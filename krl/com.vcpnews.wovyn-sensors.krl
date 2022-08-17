@@ -21,14 +21,13 @@ ruleset com.vcpnews.wovyn-sensors {
       }
       flatten = function(a,v){a.append(v)}
       justDate = function(t){t.split("T").head()}
-      formSet = function(a,t){a.union(t)}
+      asSet = function(a,t){a.union(t)}
       ent:record
         .values()
         .map(function(list){list.filter(firstHour)})
         .reduce(flatten,[])
         .map(justDate)
-        .reduce(formSet,[])
-        .encode()
+        .reduce(asSet,[])
     }
     makeMT = function(ts){
       MST = time:add(ts,{"hours": -7});
