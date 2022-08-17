@@ -13,7 +13,7 @@ ruleset com.vcpnews.wovyn-sensors {
       "Wovyn_163ECD": "Kitchen",
       "Wovyn_746ABF": "Porch",
     }
-    daysData = function(){ // finds all dates in the data
+    daysInRecord = function(){ // finds all dates in the data
       firstHour = function(v,i){
         i%2==0
         &&
@@ -67,14 +67,17 @@ ruleset com.vcpnews.wovyn-sensors {
 <h1>Manage wovyn_sensors</h1>
 #{ent:record.map(one_sensor).values().join("")}
 <h2>Operations</h2>
-<a href="export_tsv.txt" target="_blank">export</a>
-<br>
+<h3>Export records</h3>
+<a href="export_tsv.txt" target="_blank">export</a> (in new tab)
+<h3>Prune older data</h3>
 <form action="#{meta:host}/sky/event/#{meta:eci}/prune/#{event_domain}/prune_all_needed">
-<label for="cutoff">Choose a date to prune before:</label>
+<label for="cutoff">Data older than:</label>
 <select name="cutoff" id="cutoff" required>
+  <option value="">Choose date</option>
 #{
-daysData().map(function(d){
-  <<<option value="#{d}T06">#{d}</option>
+daysInRecord()
+  .map(function(d){ // assuming MDT
+    <<  <option value="#{d}T06">#{d}</option>
 >>})
   .join("")
 }</select>
