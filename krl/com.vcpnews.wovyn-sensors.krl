@@ -60,6 +60,7 @@ ruleset com.vcpnews.wovyn-sensors {
 #{v.slice(vlen-2,vlen-1).reduce(temps,"").join("")}
 </table>
 <a href="history.html?name=#{k}">history</a>
+(#{vlen/2-1} more)
 >>
       }
       html:header("manage wovyn_sensors","",null,null,_headers)
