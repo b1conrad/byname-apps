@@ -5,7 +5,7 @@ ruleset com.vcpnews.repo {
   }
   global {
     krl = function(rid){
-      ent:src
+      rid => ent:src{rid} | ent:src.keys()
     }
     pico_eci = function(){
       ent:eci
@@ -24,7 +24,6 @@ ruleset com.vcpnews.repo {
     }
     fired {
       raise introspect_repo event "channel_created"
-      ent:src := event:attr("src").math:base64decode()
       ent:eci := channel{"id"}
     }
   }
@@ -32,5 +31,15 @@ ruleset com.vcpnews.repo {
     select when introspect_repo channel_created
     foreach wrangler:channels(tags).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
+  }
+  rule storeRulesetSource {
+    select when introspect_repo source_changed
+      rid re#(.+)#
+      krl re#(.+)#
+      msg re#(.*)#
+      setting(rid,krl,msg)
+    fired {
+      ent:src{rid} := krl.math:base64decode()
+    }
   }
 }

@@ -147,16 +147,21 @@ ruleset com.vcpnews.ruleset {
       + (apps >< rid => <<
 <br>
 <form action="#{editURL}">
-<input type="hidden" name="src" value="#{rs{["meta","krl"]}.math:base64encode()}">
+<input type="hidden" name="rid" value="#{rid}">
+<input type="hidden" name="krl" value="#{rs{["meta","krl"]}.math:base64encode()}">
 <button type="submit"#{editable_app => "" | << disabled title="not editable">>}>Edit app KRL</button>
 </form>
 >> | "")
       + html:footer()
     }
+    repo_rid = "com.vcpnews.repo"
   }
   rule createEditorChildIfNeeded {
     select when ruleset app_needs_edit
-      src re#(.+)# setting(src)
+      rid re#(.+)#
+      krl re#(.+)#
+      msg re#(.*)#
+      setting(rid,krl,msg)
     pre {
       children = wrangler:children()
       netid = wrangler:name()
@@ -166,7 +171,6 @@ ruleset com.vcpnews.ruleset {
           c{"name"} == repo_name
         })
         .head()
-      repo_rid = "com.vcpnews.repo"
       eci = function(){
         repo => wrangler:picoQuery(repo{"eci"},repo_rid,"pico_eci") | null
       }
@@ -185,7 +189,6 @@ ruleset com.vcpnews.ruleset {
     select when wrangler:new_child_created
     pre {
       child_eci = event:attr("eci")
-      repo_rid = "com.vcpnews.repo"
     }
     if child_eci then
       event:send({"eci":child_eci,
