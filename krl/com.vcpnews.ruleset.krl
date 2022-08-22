@@ -3,7 +3,7 @@ ruleset com.vcpnews.ruleset {
     use module io.picolabs.wrangler alias wrangler
     use module com.vcpnews.introspect alias intro
     use module html.byu alias html
-    shares rulesets, ruleset
+    shares rulesets, ruleset, repo_krl
   }
   global {
     pf = re#^file:///usr/local/lib/node_modules/#
@@ -155,6 +155,23 @@ ruleset com.vcpnews.ruleset {
       + html:footer()
     }
     repo_rid = "com.vcpnews.repo"
+    repo_name = function(){
+      netid = wrangler:name()
+      netid+"/bazaar"
+    }
+    repo_pico = function(){
+      the_name = repo_name()
+      wrangler:children()
+        .filter(function(c){
+          c{"name"} == the_name
+        })
+        .head()
+    }
+    repo_krl = function(rid){
+      repo = repo_pico()
+      repo.isnull() => "no repo" |
+      wrangler:picoQuery(repo{"eci"},repo_rid,"krl").encode()
+    }
   }
   rule createEditorChildIfNeeded {
     select when ruleset app_needs_edit
@@ -163,28 +180,19 @@ ruleset com.vcpnews.ruleset {
       msg re#(.*)#
       setting(rid,krl,msg)
     pre {
-      children = wrangler:children()
-      netid = wrangler:name()
-      repo_name = netid+"/bazaar"
-      repo = children
-        .filter(function(c){
-          c{"name"} == repo_name
-        })
-        .head()
+      repo = repo_pico()
       eci = function(){
         repo => wrangler:picoQuery(repo{"eci"},repo_rid,"pico_eci") | null
       }
       url = <<#{meta:host}/sky/cloud/#{eci()}/#{repo_rid}/krl.txt>>
     }
     if repo then // noop() // send it an edit event
-      send_directive("_redirect",{
-        "url":url+"?rid="+rid
-      })
+      send_directive("_redirect",{"url":url+"?rid="+rid})
     fired {
     }
     else {
       raise wrangler event "new_child_request" attributes
-        event:attrs.put("name",repo_name)
+        event:attrs.put("name",repo_name())
     }
   }
   rule openNewEditor {
