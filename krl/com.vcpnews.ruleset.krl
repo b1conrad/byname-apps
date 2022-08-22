@@ -170,7 +170,12 @@ ruleset com.vcpnews.ruleset {
     repo_krl = function(rid){
       repo = repo_pico()
       repo.isnull() => "no repo" |
-      wrangler:picoQuery(repo{"eci"},repo_rid,"krl").encode()
+      wrangler:picoQuery(
+        repo{"eci"},
+        repo_rid,
+        "krl",
+        {"rid":rid}
+      )
     }
     repo_uiECI = function(){
       repo = repo_pico()
