@@ -3,7 +3,7 @@ ruleset com.vcpnews.ruleset {
     use module io.picolabs.wrangler alias wrangler
     use module com.vcpnews.introspect alias intro
     use module html.byu alias html
-    shares rulesets, ruleset, repo_krl
+    shares rulesets, ruleset, repo_krl, repo_uiECI
   }
   global {
     pf = re#^file:///usr/local/lib/node_modules/#
@@ -171,6 +171,11 @@ ruleset com.vcpnews.ruleset {
       repo = repo_pico()
       repo.isnull() => "no repo" |
       wrangler:picoQuery(repo{"eci"},repo_rid,"krl").encode()
+    }
+    repo_uiECI = function(){
+      repo = repo_pico()
+      repo.isnull() => "no repo" |
+      wrangler:picoQuery(repo{"eci"},"io.picolabs.pico-engine-ui","uiECI")
     }
   }
   rule createEditorChildIfNeeded {
