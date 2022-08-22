@@ -24,6 +24,7 @@ ruleset com.vcpnews.repo {
     }
     fired {
       raise introspect_repo event "channel_created"
+      raise introspect_repo event "source_changed" attributes event:attrs
       ent:eci := channel{"id"}
     }
   }
