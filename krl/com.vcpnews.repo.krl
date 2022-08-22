@@ -33,7 +33,7 @@ ruleset com.vcpnews.repo {
     foreach wrangler:channels(tags).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
-  rule storeRulesetSource {
+  rule storeRulesetSourceBase64Encoded {
     select when introspect_repo source_changed
       rid re#(.+)#
       krl re#(.+)#
@@ -41,6 +41,16 @@ ruleset com.vcpnews.repo {
       setting(rid,krl,msg)
     fired {
       ent:src{rid} := krl.math:base64decode()
+    }
+  }
+  rule storeRulesetSource {
+    select when introspect_repo source_changed
+      rid re#(.+)#
+      src re#(.+)#
+      msg re#(.*)#
+      setting(rid,src,msg)
+    fired {
+      ent:src{rid} := src
     }
   }
 }
