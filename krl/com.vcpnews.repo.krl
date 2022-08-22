@@ -49,8 +49,14 @@ ruleset com.vcpnews.repo {
       src re#(.+)#
       msg re#(.*)#
       setting(rid,src,msg)
+    pre {
+      line_break = (chr(13)+"?"+chr(10)).as("RegExp")
+      lines = src.split(line_break)
+      count = lines.length()
+        .klog("count")
+    }
     fired {
-      ent:src{rid} := src
+      ent:src{rid} := lines.join(chr(10))
     }
   }
 }
