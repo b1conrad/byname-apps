@@ -177,7 +177,9 @@ ruleset com.vcpnews.ruleset {
       url = <<#{meta:host}/sky/cloud/#{eci()}/#{repo_rid}/krl.txt>>
     }
     if repo then // noop() // send it an edit event
-      send_directive("_redirect",{"url":url})
+      send_directive("_redirect",{
+        "url":url+"?rid="+rid
+      })
     fired {
     }
     else {
