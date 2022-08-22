@@ -45,13 +45,11 @@ ruleset com.vcpnews.repo {
   }
   rule storeRulesetSource {
     select when introspect_repo source_changed
-      rid re#(.+)#
-      src re#(.+)#
-      msg re#(.*)#
-      setting(rid,src,msg)
+      rid re#(.+)# setting(rid)
+      where event:attr("src").length()
     pre {
       line_break = (chr(13)+"?"+chr(10)).as("RegExp")
-      lines = src.split(line_break)
+      lines = event:attr("src").split(line_break)
       count = lines.length()
         .klog("count")
     }
