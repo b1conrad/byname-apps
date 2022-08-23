@@ -285,10 +285,11 @@ ruleset com.vcpnews.ruleset {
       setting(rid)
     pre {
       has = repo_krl() >< rid
+      repo = repo_pico()
     }
     if not has then
       event:send({
-        "eci": repo_eci(),
+        "eci": repo{"eci"},
         "domain": "introspect_repo", "type": "new_source",
         "attrs": {"rid": rid, "src": krl(rid)}
       })
