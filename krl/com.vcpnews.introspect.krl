@@ -10,6 +10,8 @@ ruleset com.vcpnews.introspect {
   global {
     rsRID = "com.vcpnews.ruleset"
     introspect = function(_headers){
+      netid = wrangler:name()
+      repo_name = netid + "/bazaar"
       subs_count = subs:established()
         .filter(function(s){s{"Tx_role"}!="participant list"})
         .length()
@@ -20,13 +22,14 @@ ruleset com.vcpnews.introspect {
       cs_link = <<<a href="channels.html">channels</a\>>>
       ss_link = <<#{subs_count} <a href="subscriptions.html">subscription#{subs_count==1 => "" | "s"}</a\>>>
       child_count = wrangler:children().length()
-      one_child = wrangler:children().head()
-      child_eci = one_child{"eci"}
+      one_child = child_count==1 => wrangler:children().head() | false
+      child_eci = child_count==1 && one_child{"eci"}
+      repo_pico = child_count==1 && one_child{"name"}==repo_name
       html:header("manage introspections","",null,null,_headers)
       + <<
 <h1>Manage introspections</h1>
 <h2>Overview</h2>
-<p>Your pico is named #{wrangler:name()}#{
+<p>Your pico is named #{netid}#{
   pName => << and its parent pico is named #{pName}.>> | "."}</p>
 <p>It has #{wrangler:installedRIDs().length()} #{rs_link},
 of which #{apps.length()} are apps.
@@ -36,9 +39,9 @@ The apps can be managed with #{app_url("byu.hr.manage_apps")}.</p>
 These can be managed with #{app_url("byu.hr.relate")}.</p>
 <p>
 It has #{child_count} child pico#{
-  one_child => <<: #{one_child{"name"}}
-<a href="#{meta:host}/sky/event/#{meta:eci}/none/ruleset/child_pico_not_needed?eci=#{child_eci}">del</a>.
->> | "s."
+  repo_pico => <<: #{repo_name}
+<a href="#{meta:host}/sky/event/#{meta:eci}/none/ruleset/child_pico_not_needed?eci=#{child_eci}" onclick="return confirm('This cannot be undone, and source code may be lost if you proceed.')">del</a>.
+>> | (one_child => "" | "s.")
 }
 </p>
 <h2>Technical</h2>
