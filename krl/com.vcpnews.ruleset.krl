@@ -3,7 +3,7 @@ ruleset com.vcpnews.ruleset {
     use module io.picolabs.wrangler alias wrangler
     use module com.vcpnews.introspect alias intro
     use module html.byu alias html
-    shares rulesets, ruleset, repo_krl, repo_uiECI, krl
+    shares rulesets, ruleset, repo_krl, repo_uiECI, krl, codeEditor
   }
   global {
     pf = re#^file:///usr/local/lib/node_modules/#
@@ -148,7 +148,6 @@ ruleset com.vcpnews.ruleset {
 <br>
 <form action="#{editURL}">
 <input type="hidden" name="rid" value="#{rid}">
-<input type="hidden" name="krl" value="#{rs{["meta","krl"]}.math:base64encode()}">
 <button type="submit"#{editable_app => "" | << disabled title="not editable">>}>Edit app KRL</button>
 </form>
 >> | "")
@@ -166,6 +165,10 @@ ruleset com.vcpnews.ruleset {
           c{"name"} == the_name
         })
         .head()
+    }
+    repo_eci = function(){
+      repo = repo_pico()
+      wrangler:picoQuery(repo{"eci"},repo_rid,"pico_eci")
     }
     repo_krl = function(rid){
       repo = repo_pico()
@@ -186,30 +189,62 @@ ruleset com.vcpnews.ruleset {
       rs = ctx:rulesets.filter(function(r){r{"rid"}==rid}).head()
       rs{["meta","krl"]}
     }
+    codeEditor = function(rid,_headers){
+      the_repo_eci = repo_eci()
+      static_host = meta:host.split(":").slice(0,1).join(":")
+      ccs_link = <<<link href="#{static_host}/codeEditor.css" rel="stylesheet"\>>>
+      rawURL = <<#{meta:host}/c/#{the_repo_eci}/query/#{repo_rid}/krl.txt?rid=#{rid}>>
+      html:header(rid,ccs_link,null,null,_headers)
+      + <<<div style="float:right">
+<fieldset>
+<legend>Theme</legend>
+<input type="radio" id="dark" name="theme" checked onclick="document.getElementById('codeEditor').classList.remove('light')">
+<label for="dark">Dark</label>
+<input type="radio" id="light" name="theme" onclick="document.getElementById('codeEditor').classList.add('light')">
+<label for="light">Light</label>
+</fieldset>
+</div>
+<h2>📝 Code Editor</h2>
+<p><textarea id="lineCounter" wrap="off" readonly>1.</textarea><textarea id="codeEditor" wrap="off" spellcheck="false"></textarea></p>
+<script src="#{static_host}/codeEditor.js"></script>
+<script>
+  var xhr = new XMLHttpRequest;
+  xhr.onload = function(){
+    var data = xhr.response;
+    if(data && data.length){
+      codeEditor.value = data;
+      line_counter();
+    }
   }
-  rule createEditorChildIfNeeded {
-    select when ruleset app_needs_edit
-      rid re#(.+)#
-      krl re#(.+)#
-      msg re#(.*)#
-      setting(rid,krl,msg)
+  xhr.onerror = function(){alert(xhr.responseText);}
+  xhr.open("GET","#{rawURL}",true);
+  xhr.send();
+</script>
+<form action="#{meta:host}/sky/event/#{the_repo_eci}/save/introspect_repo/source_changed" method="POST">
+<input name="rid" value="#{rid}">
+<input name="src" type="hidden">
+<button type="submit" onclick="form.src.value=codeEditor.value">Save</button>
+</form>
+<p>Raw URL: <a href="#{rawURL}">#{rawURL}</a></p>
+>>
+      + html:footer()
+    }
+  }
+  rule createRepoChildIfNeeded {
+    select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
     pre {
       repo = repo_pico()
-      eci = function(){
-        repo => wrangler:picoQuery(repo{"eci"},repo_rid,"pico_eci") | null
-      }
-      url = <<#{meta:host}/sky/cloud/#{eci()}/#{repo_rid}/krl.txt>>
     }
-    if repo then // noop() // send it an edit event
-      send_directive("_redirect",{"url":url+"?rid="+rid})
+    if repo then noop()
     fired {
+      // repo pico already exists
     }
     else {
       raise wrangler event "new_child_request" attributes
         event:attrs.put("name",repo_name())
     }
   }
-  rule openNewEditor {
+  rule reactToChildCreation {
     select when wrangler:new_child_created
     pre {
       child_eci = event:attr("eci")
@@ -222,7 +257,7 @@ ruleset com.vcpnews.ruleset {
         )
       })
     fired {
-      raise ruleset event "repo_installed" // redirect to repo
+      raise ruleset event "repo_installed" // terminal event
     }
   }
   rule deleteChildPico {
@@ -243,5 +278,28 @@ ruleset com.vcpnews.ruleset {
       raise wrangler event "uninstall_ruleset_request"
         attributes event:attrs.put("rid",meta:rid)
     }
+  }
+  rule sendSourceCode {
+    select when ruleset app_needs_edit
+      rid re#(.+)#
+      setting(rid)
+    pre {
+      has = repo_krl() >< rid
+    }
+    if not has then
+      event:send({
+        "eci": repo_eci(),
+        "domain": "introspect_repo", "type": "source_changed",
+        "attrs": {"rid": rid, "src": krl(rid)}
+      })
+  }
+  rule openNewEditor {
+    select when ruleset app_needs_edit
+      rid re#(.+)#
+      setting(rid)
+    pre {
+      url = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/codeEditor.html?rid=#{rid}>>
+    }
+    send_directive("_redirect",{"url":url})
   }
 }
