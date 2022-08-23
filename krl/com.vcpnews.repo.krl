@@ -33,18 +33,9 @@ ruleset com.vcpnews.repo {
     foreach wrangler:channels(tags).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
-  rule storeRulesetSourceBase64Encoded {
-    select when introspect_repo source_changed
-      rid re#(.+)#
-      krl re#(.+)#
-      msg re#(.*)#
-      setting(rid,krl,msg)
-    fired {
-      ent:src{rid} := krl.math:base64decode()
-    }
-  }
   rule storeRulesetSource {
-    select when introspect_repo source_changed
+    select when introspect_repo new_source
+             or introspect_repo source_changed
       rid re#(.+)# setting(rid)
       where event:attr("src").length()
     pre {
@@ -56,5 +47,12 @@ ruleset com.vcpnews.repo {
     fired {
       ent:src{rid} := lines.join(chr(10))
     }
+  }
+  rule redirectBack {
+    select when introspect_repo source_changed
+    pre {
+      referrer = event:attr("_headers").get("referer") // sic
+    }
+    if referrer then send_directive("_redirect",{"url":referrer})
   }
 }

@@ -289,7 +289,7 @@ ruleset com.vcpnews.ruleset {
     if not has then
       event:send({
         "eci": repo_eci(),
-        "domain": "introspect_repo", "type": "source_changed",
+        "domain": "introspect_repo", "type": "new_source",
         "attrs": {"rid": rid, "src": krl(rid)}
       })
   }
