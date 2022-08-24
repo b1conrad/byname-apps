@@ -252,9 +252,7 @@ ruleset com.vcpnews.ruleset {
     if child_eci then
       event:send({"eci":child_eci,
         "domain":"wrangler","type":"install_ruleset_request",
-        "attrs":event:attrs.put(
-          {"absoluteURL": meta:rulesetURI,"rid":repo_rid}
-        )
+        "attrs":{"absoluteURL": meta:rulesetURI,"rid":repo_rid}
       })
     fired {
       raise ruleset event "repo_installed" // terminal event
