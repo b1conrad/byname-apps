@@ -30,6 +30,12 @@ input:invalid {
 >>
     bazaar = function(_headers){
       base = <<#{meta:host}/sky/cloud/#{meta:eci}/#{meta:rid}/krl_code.txt>>
+      edit = <<#{meta:host}/sky/event/#{meta:eci}/edit/bazaar_apps/app_needs_edit>>
+      repo = repo_pico()
+      repo_attrs = repo => ""
+                         | << style="pointer-events:none;cursor:default">>
+      repo_title = repo => ""
+                         | << title="not available">>
       li_apps = function(){
         ent:apps
           .values()
@@ -41,6 +47,7 @@ input:invalid {
 <td><code>#{spec.get("rsname")}</code></td>
 <td><code>#{spec.get("event_domain")}</code></td>
 <td><a href="#{base}?rid=#{rid}" onclick="shwk(event);return false">show KRL</a></td>
+<td#{repo_title}><a href="#{edit}?rid=#{rid}"#{repo_attrs}>edit/host KRL</a></td>
 <td><a href="#{meta:host}/sky/event/#{meta:eci}/none/bazaar_apps/app_not_wanted?rid=#{rid}" onclick="return confirm('This cannot be undone, and the app may be lost if you proceed.')">del</a></td>
 </tr>
 >>
@@ -57,6 +64,7 @@ input:invalid {
 <th>App meta name</th>
 <th>event domain</th>
 <th>boilerplate</th>
+<th>Edit</th>
 <th>Delete</th>
 </tr>
 #{li_apps().join("")}</table>
@@ -198,6 +206,29 @@ function selectAll(e){
 }
 >>
     }
+    repo_rid = "com.vcpnews.repo"
+    repo_name = function(){
+      netid = wrangler:name()
+      netid+"/bazaar"
+    }
+    repo_pico = function(){
+      the_name = repo_name()
+      wrangler:children()
+        .filter(function(c){
+          c{"name"} == the_name
+        })
+        .head()
+    }
+    repo_krl = function(rid){
+      repo = repo_pico()
+      repo.isnull() => "no repo" |
+      wrangler:picoQuery(
+        repo{"eci"},
+        repo_rid,
+        "krl",
+        {"rid":rid}
+      )
+    }
   }
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
@@ -249,5 +280,31 @@ function selectAll(e){
       referrer = event:attr("_headers").get("referer") // sic
     }
     if referrer then send_directive("_redirect",{"url":referrer})
+  }
+  rule sendSourceCode {
+    select when bazaar_apps app_needs_edit
+      rid re#(.+)#
+      setting(rid)
+    pre {
+      has = repo_krl() >< rid
+      repo = repo_pico()
+    }
+    if repo && not has then
+      event:send({
+        "eci": repo{"eci"},
+        "domain": "introspect_repo", "type": "new_source",
+        "attrs": {"rid": rid, "src": krl_code(rid)}
+      })
+  }
+  rule openNewEditor {
+    select when bazaar_apps app_needs_edit
+      rid re#(.+)#
+      setting(rid)
+    pre {
+      rs_rid = "com.vcpnews.ruleset"
+      rs_eci = wrangler:channels(["introspections"]).head(){"id"}
+      url = <<#{meta:host}/c/#{rs_eci}/query/#{rs_rid}/codeEditor.html?rid=#{rid}>>
+    }
+    send_directive("_redirect",{"url":url})
   }
 }

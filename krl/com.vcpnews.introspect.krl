@@ -44,7 +44,12 @@ It has #{child_count} child pico#{
 >> | (one_child => "" | "s.")
 }
 </p>
-<h2>Technical</h2>
+>>
+      + (repo_pico => <<<p>
+You have a child pico which hosts apps from a repository that it maintains.
+</p>
+>> | "")
+      + <<<h2>Technical</h2>
 <button disabled title="not yet implemented">export</button>
 >>
       + html:footer()
@@ -183,6 +188,9 @@ It has #{child_count} child pico#{
   }
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
+    pre {
+      has_ruleset_ruleset = wrangler:installedRIDs() >< rsRID
+    }
     every {
       wrangler:createChannel(
         ["introspections"],
@@ -196,7 +204,7 @@ It has #{child_count} child pico#{
       raise introspect event "channel_created"
       raise wrangler event "install_ruleset_request" attributes {
         "absoluteURL":meta:rulesetURI,"rid":rsRID,
-      }
+      } if not has_ruleset_ruleset
     }
   }
   rule keepChannelsClean {
