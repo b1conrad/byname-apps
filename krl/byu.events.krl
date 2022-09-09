@@ -3,7 +3,7 @@ ruleset byu.events {
     name "byu_events"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    shares byu_events, category, byu_event
+    shares categories, category
   }
   global {
     event_domain = "byu_events"
@@ -13,12 +13,12 @@ ruleset byu.events {
         ent:categories{k} >< id
       }).head()
     }
-    byu_events = function(_headers){
-      html:header("manage byu_events","",null,null,_headers)
+    categories = function(_headers){
+      html:header("select from categories","",null,null,_headers)
       + <<
-<h1>Manage byu_events</h1>
+<h1>Select from categories</h1>
 <form action="category.html">
-<select name="category" required>
+<select name="category_id" required>
 <option value="">Choose a category:</option>
 #{ent:categories.map(function(v,k){
   <<  <option value="#{v.head()}">#{k}</option>
@@ -30,15 +30,12 @@ ruleset byu.events {
 >>
       + html:footer()
     }
-    category = function(category,_headers){
-      loggit = (api_url+category).klog("URI")
-      response = http:get(api_url+category).klog("response")
-      content = response{"content"}.klog("content")
-      events = content.decode()
-      html:header("see byu events by category","",null,null,_headers)
+    category = function(category_id,_headers){
+      events = http:get(api_url+category_id){"content"}.decode()
+      html:header("byu events by category","",null,null,_headers)
       + <<
-<h1>See BYU events</h1>
-<h2>Category: #{nameFromId(category)}</h2>
+<h1>BYU events</h1>
+<h2>Category: #{nameFromId(category_id)}</h2>
 <dl>
 #{events.map(function(v){
   all_day = v{"AllDay"}.decode()
@@ -50,9 +47,6 @@ ruleset byu.events {
 }).join("")}</dl>
 >>
       + html:footer()
-    }
-    byu_event = function(event_id,_headers){
-      "Not yet implemented"
     }
   }
   rule initialize {
@@ -77,11 +71,13 @@ ruleset byu.events {
     select when byu_events factory_reset
     pre {
       all_events = http:get(api_url+"all"){"content"}.decode()
-      categories = all_events.reduce(function(ans,ev){
-          cat_name = ev{"CategoryName"}
-          arr = ans.get(cat_name).defaultsTo([])
-          ans.put(cat_name,arr.union(ev{"CategoryId"}))
-        },ent:categories.defaultsTo({}))
+      accumulate = function(ans,ev){
+        cat_name = ev{"CategoryName"}
+        arr = ans.get(cat_name).defaultsTo([])
+        ans.put(cat_name,arr.union(ev{"CategoryId"}))
+      }
+      starting_with = ent:categories.defaultsTo({})
+      categories = all_events.reduce(accumulate,starting_with)
     }
     fired {
       ent:categories := categories
