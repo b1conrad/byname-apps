@@ -15,6 +15,7 @@ ruleset com.vcpnews.ruleset {
       xref = module_usage()
       deet = <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/ruleset.html?rid=>>
       apps = html:cookies(_headers){"apps"}.split(",")
+.klog("apps")
       sort_key = ["meta","flushed"]
       one_ruleset = function(rs){
         rid = rs{"rid"}
