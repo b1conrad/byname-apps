@@ -4,10 +4,14 @@ ruleset com.vcpnews.wovyn-sensors {
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
     shares wovyn_sensor, history, export_tsv
-,rawData
+,rawData,rawDataLength
   }
   global {
-rawData = function(){
+rawDataLength = function(device){
+  rawData(device).length()
+}
+rawData = function(device){
+  device => ent:record{device} |
   ent:record
 }
     event_domain = "com_vcpnews_wovyn_sensors"
