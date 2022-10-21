@@ -140,15 +140,17 @@ ruleset com.vcpnews.ruleset {
 </tr>
 <tr>
 <td>Internal hash</td>
-<td title="#{meta_hash}"#{redden}>
-#{meta_hash.substr(0,7)}
-#{
-source_hash == meta_hash => "" |
-<<<a href="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/krl.txt?rid=#{rid}">src</a>
->>
-}</td>
+<td title="#{meta_hash}"#{redden}>#{meta_hash.substr(0,7)}</td>
+</tr>#{
+source_hash == meta_hash => <<
+>> |
+<<
+<tr>
+<td>Internal</td>
+<td><a href="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/krl.txt?rid=#{rid}">source</a></td>
 </tr>
-</table>
+>>
+}</table>
 >>
       + (apps >< rid => <<
 <br>
