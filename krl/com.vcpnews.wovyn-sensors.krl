@@ -107,6 +107,7 @@ daysInRecord()
     pruned_list = function(list,cutoff_date){
       index = cutoff_date => list.cutoff_index(cutoff_date) | 0
       sanity = (index%2==0).klog("index even?")
+urk = sanity => null | index.klog("bad index is")
       sanity => list.slice(index,list.length()-1) | list
     }
     history = function(name,cutoff,_headers){
