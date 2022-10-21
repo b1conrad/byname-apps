@@ -135,12 +135,18 @@ ruleset com.vcpnews.ruleset {
 <td><a href="#{url}" target="_blank">#{url}</a></td>
 </tr>
 <tr>
-<td>Internal hash</td>
-<td title="#{meta_hash}">#{meta_hash.substr(0,7)}</td>
+<td>Source code hash</td>
+<td title="#{source_hash}">#{source_hash.substr(0,7)}</td>
 </tr>
 <tr>
-<td>Source code hash</td>
-<td title="#{source_hash}"#{redden}>#{source_hash.substr(0,7)}</td>
+<td>Internal hash</td>
+<td title="#{meta_hash}"#{redden}>
+#{meta_hash.substr(0,7)}
+#{
+source_hash == meta_hash => "" |
+<<<a href="#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/krl.txt?rid=#{rid}">src</a>
+>>
+}</td>
 </tr>
 </table>
 >>
