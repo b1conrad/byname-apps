@@ -4,16 +4,8 @@ ruleset com.vcpnews.wovyn-sensors {
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
     shares wovyn_sensor, history, export_tsv
-,rawData,rawDataLength
   }
   global {
-rawDataLength = function(device){
-  rawData(device).length()
-}
-rawData = function(device){
-  device => ent:record{device} |
-  ent:record
-}
     event_domain = "com_vcpnews_wovyn_sensors"
     mapping = {
       "Wovyn_2BD707": "Shed",
@@ -107,7 +99,6 @@ daysInRecord()
     pruned_list = function(list,cutoff_date){
       index = cutoff_date => list.cutoff_index(cutoff_date) | 0
       sanity = (index%2==0).klog("index even?")
-urk = sanity => null | index.klog("bad index is")
       sanity => list.slice(index,list.length()-1) | list
     }
     history = function(name,cutoff,_headers){
