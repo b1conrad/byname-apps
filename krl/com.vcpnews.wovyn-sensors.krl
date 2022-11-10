@@ -166,10 +166,13 @@ daysInRecord()
       device = event:attrs{["property","name"]}
       temps = event:attrs{["genericThing","data","temperature"]}
       tempF = temps.head(){"temperatureF"}
-      record = ent:record{device}.defaultsTo([]).append([time:now(),tempF])
+      time = time:now()
+      record = ent:record{device}.defaultsTo([]).append([time,tempF])
     }
     fired {
       ent:record{device} := record
+      raise com_vcpnews_wovyn_sensors event "temp_recorded"
+        attributes {"name":device,"time":time.makeMT(),"temp":tempF}
     }
   }
   rule pruneList {
