@@ -172,7 +172,7 @@ daysInRecord()
     fired {
       ent:record{device} := record
       raise com_vcpnews_wovyn_sensors event "temp_recorded"
-        attributes {"name":device,"time":time.makeMT(),"temp":tempF}
+        attributes {"name":mapping{device},"time":time.makeMT(),"temp":tempF}
     }
   }
   rule pruneList {
