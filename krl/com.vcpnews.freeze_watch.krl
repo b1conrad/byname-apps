@@ -22,9 +22,9 @@ ent:freezing_temps.defaultsTo([])
                   .reverse()
                   .map(function(v){
 <<<tr>
-<td>v{"name"}</td>
-<td>v{"time"}</td>
-<td>v{"temp"}</td>
+<td>#{v{"name"}}</td>
+<td>#{v{"time"}}</td>
+<td>#{v{"temp"}}</td>
 </tr>
 >>}).join("")
 }
