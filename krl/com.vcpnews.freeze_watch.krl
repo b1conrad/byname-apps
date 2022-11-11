@@ -56,6 +56,12 @@ ent:freezing_temps.defaultsTo([])
     foreach wrangler:channels(["freezing_temps"]).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
+  rule dumpState {
+    select when com_vcpnews_freeze_watch factory_reset
+    fired {
+      clear ent:freezing_temps
+    }
+  }
   rule recordFreezingTemps {
     select when com_vcpnews_wovyn_sensors temp_recorded
       where event:attr("temp") <= 32
