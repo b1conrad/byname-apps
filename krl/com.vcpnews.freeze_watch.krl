@@ -15,15 +15,20 @@ ruleset com.vcpnews.freeze_watch {
 <tr>
 <th>Name</th>
 <th>Date</th>
+<th>Time</th>
 <th>Temp</th>
 </tr>
 #{
 ent:freezing_temps.defaultsTo([])
                   .reverse()
                   .map(function(v){
+                    parts = v{"time"}.split(re#[T.]#)
+                    date = parts.head()
+                    time = parts[1]
 <<<tr>
 <td>#{v{"name"}}</td>
-<td>#{v{"time"}}</td>
+<td>#{date}</td>
+<td>#{time}</td>
 <td>#{v{"temp"}}</td>
 </tr>
 >>}).join("")
