@@ -19,8 +19,20 @@ ruleset com.vcpnews.freeze_watch {
 <th>Temp</th>
 </tr>
 #{
-ent:latest_temp.put(ent:lowest_temp)
-               .map(function(v){
+ent:latest_temp.map(function(v){
+                 parts = v{"time"}.split(re#[T.]#)
+                 date = parts.head()
+                 time = parts[1]
+<<<tr>
+<td>#{v{"name"}}</td>
+<td>#{date}</td>
+<td>#{time}</td>
+<td>#{v{"temp"}}</td>
+</tr>
+>>}).values().join("")
+}
+#{
+ent:lowest_temp.map(function(v){
                  parts = v{"time"}.split(re#[T.]#)
                  date = parts.head()
                  time = parts[1]
