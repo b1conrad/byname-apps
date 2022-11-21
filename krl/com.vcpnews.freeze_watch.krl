@@ -93,9 +93,9 @@ ent:lowest_temp.map(function(v){
     }
     fired {
       ent:lowest_temp := {}
+      ent:latest_temp := {}
       ent:lowest_temp{"Shed"} := lowestShed
       ent:latest_temp{"Shed"} := latestShed
-      ent:latest_temp := {}
       ent:lowest_temp{"Porch"} := lowestPorch
       ent:latest_temp{"Porch"} := latestPorch
     }
