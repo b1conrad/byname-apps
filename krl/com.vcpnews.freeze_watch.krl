@@ -19,23 +19,28 @@ ruleset com.vcpnews.freeze_watch {
 <th>Temp</th>
 </tr>
 #{
-ent:freezing_temps.defaultsTo([])
-                  .reverse()
-                  .map(function(v){
-                    parts = v{"time"}.split(re#[T.]#)
-                    date = parts.head()
-                    time = parts[1]
+ent:latest_temp.put(ent:lowest_temp)
+               .map(function(v){
+                 parts = v{"time"}.split(re#[T.]#)
+                 date = parts.head()
+                 time = parts[1]
 <<<tr>
 <td>#{v{"name"}}</td>
 <td>#{date}</td>
 <td>#{time}</td>
 <td>#{v{"temp"}}</td>
 </tr>
->>}).join("")
+>>}).values().join("")
 }
 </table>
 >>
       + html:footer()
+    }
+    by = function(key){
+      function(a,b){a{key}.encode() cmp b{key}.encode()}
+    }
+    by_num = function(key){
+      function(a,b){a{key} <=> b{key}}
     }
   }
   rule initialize {
@@ -56,19 +61,56 @@ ent:freezing_temps.defaultsTo([])
     foreach wrangler:channels(["freezing_temps"]).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
-  rule dumpState {
+  rule convertState {
     select when com_vcpnews_freeze_watch factory_reset
+    pre {
+      lowestShed = ent:freezingTemps.filter(function(v){v=="Shed"})
+                                    .sort(by_num("temp"))
+                                    .head()
+      lowestPorch = ent:freezingTemps.filter(function(v){v=="Porch"})
+                                     .sort(by_num("temp"))
+                                     .head()
+      latestShed = ent:freezingTemps.filter(function(v){v=="Shed"})
+                                    .sort(by("time"))
+                                    .reverse()
+                                    .head()
+      latestPorch = ent:freezingTemps.filter(function(v){v=="Porch"})
+                                     .sort(by("time"))
+                                     .reverse()
+                                     .head()
+    }
     fired {
-      clear ent:freezing_temps
+      ent:lowest_temp := {}
+      ent:lowest_temp{"Shed"} := lowestShed
+      ent:latest_temp{"Shed"} := latestShed
+      ent:latest_temp := {}
+      ent:lowest_temp{"Porch"} := lowestPorch
+      ent:latest_temp{"Porch"} := latestPorch
     }
   }
   rule recordFreezingTemps {
     select when com_vcpnews_wovyn_sensors temp_recorded
       where event:attr("temp") <= 32
     fired {
-      ent:freezing_temps := ent:freezing_temps.defaultsTo([]).append(event:attrs)
       raise com_vcpnews_freeze_watch event "freezing_temp_recorded"
         attributes event:attrs
+    }
+  }
+  rule recordRecordTemp {
+    select when com_vcpnews_wovyn_sensors freezing_temp_recorded
+      name re#(.+)#
+      temp re#([.\d]+)#
+      setting(name,temp)
+    pre {
+      record = ent:lowest_temp{[name,"temp"]}
+      lowest = record.isnull() || temp < record
+    }
+    if lowest then noop()
+    fired {
+      ent:lowest_temp{name} := event:attrs
+    }
+    finally {
+      ent:latest_temp{name} := event:attrs
     }
   }
 }
