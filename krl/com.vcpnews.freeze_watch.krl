@@ -18,6 +18,7 @@ ruleset com.vcpnews.freeze_watch {
 <th>Time</th>
 <th>Temp</th>
 </tr>
+<tr><td colspan="4">Latest</td></tr>
 #{
 ent:latest_temp.map(function(v){
                  parts = v{"time"}.split(re#[T.]#)
@@ -31,6 +32,7 @@ ent:latest_temp.map(function(v){
 </tr>
 >>}).values().join("")
 }
+<tr><td colspan="4">Lowest</td></tr>
 #{
 ent:lowest_temp.map(function(v){
                  parts = v{"time"}.split(re#[T.]#)
@@ -47,12 +49,6 @@ ent:lowest_temp.map(function(v){
 </table>
 >>
       + html:footer()
-    }
-    by = function(key){
-      function(a,b){a{key}.encode() cmp b{key}.encode()}
-    }
-    by_num = function(key){
-      function(a,b){a{key} <=> b{key}}
     }
   }
   rule initialize {
@@ -73,31 +69,10 @@ ent:lowest_temp.map(function(v){
     foreach wrangler:channels(["freezing_temps"]).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
-  rule convertState {
+  rule dumpState {
     select when com_vcpnews_freeze_watch factory_reset
-    pre {
-      lowestShed = ent:freezing_temps.filter(function(v){v{"name"}=="Shed"})
-                                    .sort(by_num("temp"))
-                                    .head()
-      lowestPorch = ent:freezing_temps.filter(function(v){v{"name"}=="Porch"})
-                                     .sort(by_num("temp"))
-                                     .head()
-      latestShed = ent:freezing_temps.filter(function(v){v{"name"}=="Shed"})
-                                    .sort(by("time"))
-                                    .reverse()
-                                    .head()
-      latestPorch = ent:freezing_temps.filter(function(v){v{"name"}=="Porch"})
-                                     .sort(by("time"))
-                                     .reverse()
-                                     .head()
-    }
     fired {
-      ent:lowest_temp := {}
-      ent:latest_temp := {}
-      ent:lowest_temp{"Shed"} := lowestShed
-      ent:latest_temp{"Shed"} := latestShed
-      ent:lowest_temp{"Porch"} := lowestPorch
-      ent:latest_temp{"Porch"} := latestPorch
+      clear ent:freezing_temps
     }
   }
   rule recordFreezingTemps {
