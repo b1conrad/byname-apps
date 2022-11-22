@@ -80,13 +80,12 @@ ent:lowest_temp.map(function(v){
   rule recordRecordTemp {
     select when com_vcpnews_wovyn_sensors freezing_temp_recorded
       name re#(.+)#
-      temp re#([.\d]+)#
-      setting(name,temp)
+      setting(name)
     pre {
       record = ent:lowest_temp{[name,"temp"]}
-      lowest = record.isnull() || temp < record
+      lowest = record.isnull() || event:attr("temp") < record
     }
-    if lowest then noop()
+    if lowest.klog("lowest") then noop()
     fired {
       ent:lowest_temp{name} := event:attrs
     }
