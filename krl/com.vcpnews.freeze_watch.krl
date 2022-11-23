@@ -7,8 +7,20 @@ ruleset com.vcpnews.freeze_watch {
   }
   global {
     event_domain = "com_vcpnews_freeze_watch"
+    styles = <<
+<style type="text/css">
+table {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+td, th {
+  border: 1px solid black;
+  padding: 5px;
+}
+</style>
+>>
     freezing_temp = function(_headers){
-      html:header("manage freezing_temps","",null,null,_headers)
+      html:header("manage freezing_temps",styles,null,null,_headers)
       + <<
 <h1>Manage freezing_temps</h1>
 <table>
