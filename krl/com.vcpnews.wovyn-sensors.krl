@@ -3,7 +3,7 @@ ruleset com.vcpnews.wovyn-sensors {
     name "wovyn_sensors"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    shares wovyn_sensor, history, export_tsv
+    shares wovyn_sensor, history, export_tsv, export_csv
   }
   global {
     event_domain = "com_vcpnews_wovyn_sensors"
@@ -117,21 +117,27 @@ daysInRecord()
       + html:footer()
     
     }
-    export_tsv = function(){
-      one_device = function(list,tabs){
+    LF = chr(10)
+    export = function(delim){
+      one_device = function(list,delims){
         tts = function(a,tt,i){
-          a+(i%2==0 => tt.makeMT().ts_format() + tabs | tt + chr(10))
+          a+(i%2==0 => tt.makeMT().ts_format() + delims | tt + LF)
         }
         list.reduce(tts,"")
       }
-      hdr = ["Timestamp"].append(mapping.values().reverse()).join(chr(9))
+      hdr = ["Timestamp"].append(mapping.values().reverse()).join(delim)
       lines = mapping.keys().reverse().map(function(k,i){
-        tab_char = function(x){chr(9)}
-        tabs = 0.range(i).map(tab_char).join("")
-        ent:record{k}.one_device(tabs)
-      }).join("").split(chr(10)).sort().join(chr(10))
+        delims = 0.range(i).map(function(x){delim}).join("")
+        ent:record{k}.one_device(delims)
+      }).join("").split(LF).sort().join(LF)
       hdr
       + lines
+    }
+    export_tsv = function(){
+      export(chr(9))
+    }
+    export_csv = function(){
+      export(",")
     }
   }
   rule initialize {
