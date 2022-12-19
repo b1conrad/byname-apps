@@ -69,7 +69,7 @@ ruleset com.vcpnews.wovyn-sensors {
 #{ent:record.map(one_sensor).values().join("")}
 <h2>Operations</h2>
 <h3>Export records</h3>
-<a href="export_tsv.txt" target="_blank">export</a> (in new tab)
+<a href="export_csv.txt" target="_blank">export</a> (in new tab)
 <h3>Prune older data</h3>
 <form action="#{meta:host}/sky/event/#{meta:eci}/prune/#{event_domain}/prune_all_needed">
 <label for="cutoff">Data older than:</label>
