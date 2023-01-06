@@ -82,7 +82,7 @@ daysInRecord()
 >>})
   .join("")
 }</select>
-<button type="submit">Prune</button>
+<button type="submit" style="cursor:pointer">Prune</button>
 </form>
 >>
       + html:footer()
