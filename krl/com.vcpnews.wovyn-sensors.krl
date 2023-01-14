@@ -9,7 +9,7 @@ ruleset com.vcpnews.wovyn-sensors {
     event_domain = "com_vcpnews_wovyn_sensors"
     mapping = {
       "Wovyn_2BD707": "Shed",
-      "Wovyn_162EB3": "Attic West",
+      "Wovyn_162EB3": "Attic",
       "Wovyn_163ECD": "Kitchen",
       "Wovyn_746ABF": "Porch",
     }
