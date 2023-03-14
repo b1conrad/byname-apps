@@ -17,7 +17,7 @@ ruleset com.vcpnews.wovyn-sensors {
       firstHour = function(v,i){
         i%2==0
         &&
-        v.encode().decode().match(re#T07#) // assuming MST
+        v.encode().decode().match(re#T06#) // assuming MDT
       }
       flatten = function(a,v){a.append(v)}
       justDate = function(t){t.split("T").head()}
@@ -77,8 +77,8 @@ ruleset com.vcpnews.wovyn-sensors {
   <option value="">Choose date</option>
 #{
 daysInRecord()
-  .map(function(d){ // assuming MST
-    <<  <option value="#{d}T07">#{d}</option>
+  .map(function(d){ // assuming MDT
+    <<  <option value="#{d}T06">#{d}</option>
 >>})
   .join("")
 }</select>
