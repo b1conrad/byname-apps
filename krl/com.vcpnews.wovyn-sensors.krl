@@ -49,6 +49,7 @@ ruleset com.vcpnews.wovyn-sensors {
 >>)
     }
     wovyn_sensor = function(_headers){
+      days_in_record = daysInRecord()
       one_sensor = function(v,k){
         vlen = v.length()
         <<<h2 title="#{k}">#{mapping{k}}</h2>
@@ -76,7 +77,7 @@ ruleset com.vcpnews.wovyn-sensors {
 <select name="cutoff" id="cutoff" required>
   <option value="">Choose date</option>
 #{
-daysInRecord()
+days_in_record
   .map(function(d){ // assuming MDT
     <<  <option value="#{d}T06">#{d}</option>
 >>})
@@ -84,6 +85,11 @@ daysInRecord()
 }</select>
 <button type="submit" style="cursor:pointer">Prune</button>
 </form>
+<h3>Email Setup</h3>
+<ul>
+#{days_in_record.sort().map(function(d){
+  <<  <li>#{d}</li>
+>>}).join("")}</ul>
 >>
       + html:footer()
     }
