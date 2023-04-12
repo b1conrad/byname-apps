@@ -227,7 +227,7 @@ days_in_record
       raise byname_notification event "status" attributes {
         "application":meta:rid,
         "subject":date,
-        "description":export_csv()
+        "description":export_csv().split(LF).join(chr(13)+LF)
       }
     }
   }
