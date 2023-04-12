@@ -49,6 +49,7 @@ ruleset com.vcpnews.wovyn-sensors {
 >>)
     }
     wovyn_sensor = function(_headers){
+      send_url = <<#{meta:host}/c/#{meta:eci}/event/#{event_domain}/export_file_needed>>
       days_in_record = daysInRecord()
       one_sensor = function(v,k){
         vlen = v.length()
@@ -87,8 +88,10 @@ days_in_record
 </form>
 <h3>Email Setup</h3>
 <ul>
-#{days_in_record.sort().map(function(d){
-  <<  <li>#{d}</li>
+#{days_in_record.sort().map(function(d,i){
+  url = send_url + "?date=" + d
+  item = i => d | <<<a href="#{url}">#{d}</a\>>>
+  <<  <li>#{item}</li>
 >>}).join("")}</ul>
 >>
       + html:footer()
@@ -216,5 +219,16 @@ days_in_record
       referrer = event:attr("_headers").get("referer") // sic
     }
     if referrer then send_directive("_redirect",{"url":referrer})
+  }
+  rule sendExportViaEmail {
+    select when com_vcpnews_wovyn_sensors export_file_needed
+      date re#^(202\d-\d\d-\d\d)$# setting(date)
+    fired {
+      raise byname_notification event "status" attributes {
+        "application":meta:rid,
+        "subject":date,
+        "description":export_csv()
+      }
+    }
   }
 }
