@@ -4,6 +4,7 @@ ruleset com.vcpnews.wovyn-sensors {
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
     shares wovyn_sensor, history, export_tsv, export_csv
+    provides daysInRecord, export_csv
   }
   global {
     event_domain = "com_vcpnews_wovyn_sensors"
@@ -49,8 +50,6 @@ ruleset com.vcpnews.wovyn-sensors {
 >>)
     }
     wovyn_sensor = function(_headers){
-      send_url = <<#{meta:host}/c/#{meta:eci}/event/#{event_domain}/export_file_needed>>
-      days_in_record = daysInRecord()
       one_sensor = function(v,k){
         vlen = v.length()
         <<<h2 title="#{k}">#{mapping{k}}</h2>
@@ -78,7 +77,7 @@ ruleset com.vcpnews.wovyn-sensors {
 <select name="cutoff" id="cutoff" required>
   <option value="">Choose date</option>
 #{
-days_in_record
+daysInRecord()
   .map(function(d){ // assuming MDT
     <<  <option value="#{d}T06">#{d}</option>
 >>})
@@ -86,13 +85,6 @@ days_in_record
 }</select>
 <button type="submit" style="cursor:pointer">Prune</button>
 </form>
-<h3>Email Setup</h3>
-<ul>
-#{days_in_record.sort().map(function(d,i){
-  url = send_url + "?date=" + d
-  item = i => d | <<<a href="#{url}">#{d}</a\>>>
-  <<  <li>#{item}</li>
->>}).join("")}</ul>
 >>
       + html:footer()
     }
@@ -219,16 +211,5 @@ days_in_record
       referrer = event:attr("_headers").get("referer") // sic
     }
     if referrer then send_directive("_redirect",{"url":referrer})
-  }
-  rule sendExportViaEmail {
-    select when com_vcpnews_wovyn_sensors export_file_needed
-      date re#^(202\d-\d\d-\d\d)$# setting(date)
-    fired {
-      raise byname_notification event "status" attributes {
-        "application":meta:rid,
-        "subject":date,
-        "description":export_csv().split(LF).join(chr(13)+LF)
-      }
-    }
   }
 }
