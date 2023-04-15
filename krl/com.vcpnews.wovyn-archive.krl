@@ -90,7 +90,12 @@ To <input name="email" value="#{ent:email || ""}">
       date re#^(202\d-\d\d-\d\d)$# setting(date)
     pre {
       subject = <<ByName: #{meta:rid}: #{date}>>
-      descr = sensors:export_csv()
+      dateRE = ("^"+date).as("RegExp")
+      current_date = function(entry,index){
+        index == 0              // keep header line
+        || entry.match(dateRE)  // and entries for this date
+      }
+      descr = sensors:export_csv().filter(current_date)
     }
     if ent:email then
       email:send_text(ent:email,subject,descr) setting(response)
