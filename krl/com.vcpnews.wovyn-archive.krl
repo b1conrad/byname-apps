@@ -14,9 +14,16 @@ ruleset com.vcpnews.wovyn-archive {
       setURL = <<#{baseURL}/new_settings>>
       send_url = <<#{meta:host}/c/#{meta:eci}/event/#{event_domain}/export_file_needed>>
       days_in_record = sensors:daysInRecord()
+      one_response = function(v,k){
+        <<<dt>#{k}</dt><dd><pre>#{v}</pre></dd>
+>>
+      }
       html:header("manage responses","",null,null,_headers)
       + <<
 <h1>Manage responses</h1>
+<h2>Responses</h2>
+<dl>#{ent:responses.map(one_response).values().join("")}</dl>
+<h2>Setup</h2>
 <h3>Email Setup</h3>
 <form action="#{setURL}">
 To <input name="email" value="#{ent:email || ""}">
