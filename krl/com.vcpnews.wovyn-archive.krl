@@ -10,8 +10,17 @@ ruleset com.vcpnews.wovyn-archive {
   global {
     event_domain = "com_vcpnews_wovyn_archive"
     response = function(_headers){
-      baseURL =<<#{meta:host}/sky/event/#{meta:eci}/none/#{event_domain}>> 
-      setURL = <<#{baseURL}/new_settings>>
+      base_url = <<#{meta:host}/sky/event/#{meta:eci}>>
+      setURL = <<#{base_url}/set/#{event_domain}/new_settings>>
+      morning_url_on = <<#{base_url}/activate/#{event_domain}/morning_notification_wanted>>
+      morning_url_off = <<#{base_url}/deactivate/#{event_domain}/no_morning_notification>>
+      is_morning_event = function(s){
+                           s{["event","domain"]} == event_domain &&
+                           s{["event","name"]} == "it_is_morning"
+                         }
+      morning_event = schedule:list().filter(is_morning_event).head()
+      toggle_url = morning_event => morning_url_off+"?id="+morning_event{"id"} | morning_url_on
+      toggle_label = morning_event => "Turn off" | "Turn on"
       send_url = <<#{meta:host}/c/#{meta:eci}/event/#{event_domain}/export_file_needed>>
       days_in_record = sensors:daysInRecord()
       one_response = function(v,k){
@@ -37,6 +46,13 @@ To <input name="email" value="#{ent:email || ""}">
   item = i => d | <<<a href="#{url}">#{d}</a\>>>
   <<  <li>#{item}</li>
 >>}).join("")}</ul>
+<h2>Morning notification</h2>
+<h3>Active?</h3>
+<p>#{
+  morning_event => "Yes" | "No"
+}
+<button onclick="location='#{toggle_url}'">#{toggle_label}</button>
+</p>
 >>
       + html:footer()
     }
@@ -99,6 +115,22 @@ To <input name="email" value="#{ent:email || ""}">
         attributes {"date":days_in_record.head()}
       raise com_vcpnews_wovyn_sensors event "prune_all_needed"
         attributes {"cutoff":days_in_record[1]+"T06"}
+    }
+  }
+  rule activateMorningNotification {
+    select when com_vcpnews_wovyn_archive morning_notification_wanted
+    fired {
+      schedule com_vcpnews_wovyn_archive event "it_is_morning"
+        repeat << 0 9 * * * >>  attributes { } setting(id)
+      ent:id := id
+    }
+  }
+  rule deactivateMorningNotification {
+    select when com_vcpnews_wovyn_archive no_morning_notification
+      id re#(.+)# setting(id)
+    schedule:remove(id)
+    fired {
+      clear ent:id if ent:id == id || ent:id{"id"} == id
     }
   }
 }
