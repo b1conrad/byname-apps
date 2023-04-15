@@ -3,7 +3,7 @@ ruleset com.vcpnews.wovyn-archive {
     name "responses"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    use module com.vcpnews.wovyn-sensors alias wovyn
+    use module com.vcpnews.wovyn-sensors alias sensors
     use module com.mailjet.sdk alias email
     shares response
   }
@@ -13,7 +13,7 @@ ruleset com.vcpnews.wovyn-archive {
       baseURL =<<#{meta:host}/sky/event/#{meta:eci}/none/#{event_domain}>> 
       setURL = <<#{baseURL}/new_settings>>
       send_url = <<#{meta:host}/c/#{meta:eci}/event/#{event_domain}/export_file_needed>>
-      days_in_record = wovyn:daysInRecord()
+      days_in_record = sensors:daysInRecord()
       html:header("manage responses","",null,null,_headers)
       + <<
 <h1>Manage responses</h1>
@@ -64,7 +64,7 @@ To <input name="email">
       date re#^(202\d-\d\d-\d\d)$# setting(date)
     pre {
       subject = <<ByName: #{meta:rid}: #{date}>>
-      descr = wovyn:export_csv()
+      descr = sensors:export_csv()
     }
     if ent:email then
       email:send_text(ent:email,subject,descr) setting(response)
@@ -81,5 +81,15 @@ To <input name="email">
   }
   rule dailyExportAndPrune {
     select when com_vcpnews_wovyn_archive it_is_morning
+    pre {
+      days_in_record = sensors:daysInRecord()
+    }
+    if days_in_record.length() >= 2 then noop()
+    fired {
+      raise com_vcpnews_wovyn_archive event "export_file_needed"
+        attributes {"date":days_in_record.head()}
+      raise com_vcpnews_wovyn_sensors event "prune_all_needed"
+        attributes {"cutoff":days_in_record[1]+"T06"}
+    }
   }
 }
