@@ -15,7 +15,8 @@ ruleset com.vcpnews.wovyn-archive {
       send_url = <<#{meta:host}/c/#{meta:eci}/event/#{event_domain}/export_file_needed>>
       days_in_record = sensors:daysInRecord()
       one_response = function(v,k){
-        <<<dt>#{k}</dt><dd><pre>#{v}</pre></dd>
+        resp = v.decode()
+        <<<dt>#{k}</dt><dd><pre>#{resp}</pre></dd>
 >>
       }
       html:header("manage responses","",null,null,_headers)
