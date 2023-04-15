@@ -39,6 +39,14 @@ ruleset com.vcpnews.wovyn-archive {
 To <input name="email" value="#{ent:email || ""}">
 <button type="submit">Save changes</button>
 </form>
+<h3>Morning notification</h3>
+<h4>Active?</h4>
+<p>#{
+  morning_event => "Yes" | "No"
+}
+<button onclick="location='#{toggle_url}'">#{toggle_label}</button>
+</p>
+<h2>Technical</h2>
 <h3>Days in record</h3>
 <ul>
 #{days_in_record.sort().map(function(d,i){
@@ -46,13 +54,6 @@ To <input name="email" value="#{ent:email || ""}">
   item = i => d | <<<a href="#{url}">#{d}</a\>>>
   <<  <li>#{item}</li>
 >>}).join("")}</ul>
-<h2>Morning notification</h2>
-<h3>Active?</h3>
-<p>#{
-  morning_event => "Yes" | "No"
-}
-<button onclick="location='#{toggle_url}'">#{toggle_label}</button>
-</p>
 >>
       + html:footer()
     }
