@@ -19,9 +19,10 @@ ruleset com.vcpnews.wovyn-archive {
 <h1>Manage responses</h1>
 <h3>Email Setup</h3>
 <form action="#{setURL}">
-To <input name="email">
+To <input name="email" value="#{ent:email || ""}">
 <button type="submit">Save changes</button>
 </form>
+<h3>Days in record</h3>
 <ul>
 #{days_in_record.sort().map(function(d,i){
   url = send_url + "?date=" + d
