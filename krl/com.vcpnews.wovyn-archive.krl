@@ -15,7 +15,7 @@ ruleset com.vcpnews.wovyn-archive {
       send_url = <<#{meta:host}/c/#{meta:eci}/event/#{event_domain}/export_file_needed>>
       days_in_record = sensors:daysInRecord()
       one_response = function(v,k){
-        resp = v.decode()
+        resp = v.encode()
         <<<dt>#{k}</dt><dd><pre>#{resp}</pre></dd>
 >>
       }
