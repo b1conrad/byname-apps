@@ -79,4 +79,7 @@ To <input name="email">
     }
     if referrer then send_directive("_redirect",{"url":referrer})
   }
+  rule dailyExportAndPrune {
+    select when com_vcpnews_wovyn_archive it_is_morning
+  }
 }
