@@ -57,6 +57,7 @@ To <input name="email" value="#{ent:email || ""}">
 >>
       + html:footer()
     }
+    LF = chr(10)
   }
   rule initialize {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
@@ -95,7 +96,10 @@ To <input name="email" value="#{ent:email || ""}">
         index == 0              // keep header line
         || entry.match(dateRE)  // and entries for this date
       }
-      descr = sensors:export_csv().filter(current_date)
+      descr = sensors:export_csv()
+                .split(LF)
+                .filter(current_date)
+                .join(LF)
     }
     if ent:email then
       email:send_text(ent:email,subject,descr) setting(response)
@@ -105,6 +109,10 @@ To <input name="email" value="#{ent:email || ""}">
   }
   rule redirectBack {
     select when com_vcpnews_wovyn_archive new_settings
+             or com_vcpnews_wovyn_archive morning_notification_wanted
+             or com_vcpnews_wovyn_archive no_morning_notification
+             or com_vcpnews_wovyn_archive new_settings
+             or com_vcpnews_wovyn_archive export_file_needed
     pre {
       referrer = event:attr("_headers").get("referer") // sic
     }
