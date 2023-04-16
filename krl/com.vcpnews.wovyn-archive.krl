@@ -120,6 +120,7 @@ To <input name="email" value="#{ent:email || ""}">
   }
   rule dailyExportAndPrune {
     select when com_vcpnews_wovyn_archive it_is_morning
+             or org_picostack_get_me_ribs it_is_morning
     pre {
       days_in_record = sensors:daysInRecord()
     }
