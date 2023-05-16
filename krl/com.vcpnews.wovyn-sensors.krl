@@ -4,6 +4,7 @@ ruleset com.vcpnews.wovyn-sensors {
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
     shares wovyn_sensor, history, export_tsv, export_csv
+, export_raw
     provides daysInRecord, export_csv
   }
   global {
@@ -139,6 +140,9 @@ daysInRecord()
     }
     export_csv = function(){
       export(",")
+    }
+    export_raw = function(name){
+      ent:record{name}.klog("raw")
     }
   }
   rule initialize {
