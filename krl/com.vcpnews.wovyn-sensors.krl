@@ -30,6 +30,7 @@ ruleset com.vcpnews.wovyn-sensors {
         .reduce(flatten,[])
         .map(justDate)
         .reduce(asSet,[])
+        .sort()
     }
     makeMT = function(ts){
       MST = time:add(ts,{"hours": -7});
