@@ -168,15 +168,27 @@ function selectAll(e){
       home = ent:apps{[rid,"name"]}
       channel_tags = [ent:apps{[rid,"rsname"]}].encode()
       event_domain = ent:apps{[rid,"event_domain"]}
+      event_url_code = "<<#{meta:host}/sky/event/#{meta:eci}/#{eid}/#{event_domain}/#{event_type}>>"
+      query_url_code = "<<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/#{query_name}>>"
       <<ruleset #{rid} {
   meta {
     name "#{rsname}"
     use module io.picolabs.wrangler alias wrangler
     use module html.byu alias html
-    shares #{home}
+    shares main_url, #{home}
   }
   global {
     event_domain = "#{event_domain}"
+    event_url = function(event_type,event_id){
+      eid = event_id || "none"
+      #{event_url_code}
+    }
+    query_url = function(query_name){
+      #{query_url_code}
+    }
+    main_url = function(){
+      query_url("#{home}")
+    }
     #{home} = function(_headers){
       html:header("manage #{rsname}","",null,null,_headers)
       + <<
