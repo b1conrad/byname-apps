@@ -187,7 +187,7 @@ function selectAll(e){
       #{query_url_code}
     }
     main_url = function(){
-      query_url("#{home}")
+      query_url("#{home}.html")
     }
     #{home} = function(_headers){
       html:header("manage #{rsname}","",null,null,_headers)

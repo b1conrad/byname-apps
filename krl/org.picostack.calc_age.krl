@@ -15,7 +15,7 @@ ruleset org.picostack.calc_age {
       <<#{meta:host}/c/#{meta:eci}/query/#{meta:rid}/#{query_name}>>
     }
     main_url = function(){
-      query_url("age_calc")
+      query_url("age_calc.html")
     }
     age_calc = function(_headers){
       val_name = ent:name => << value="#{ent:name}">> | ""
