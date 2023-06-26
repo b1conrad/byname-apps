@@ -179,6 +179,7 @@ function selectAll(e){
     shares main_url, #{home}
   }
   global {
+    channel_tags = #{channel_tags}
     event_domain = "#{event_domain}"
     event_url = function(event_type,event_id){
       eid = event_id || "none"
@@ -202,7 +203,7 @@ function selectAll(e){
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
     every {
       wrangler:createChannel(
-        #{channel_tags},
+        channel_tags,
         {"allow":[{"domain":event_domain,"name":"*"}],"deny":[]},
         {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
       )
@@ -213,7 +214,7 @@ function selectAll(e){
   }
   rule keepChannelsClean {
     select when #{event_domain} factory_reset
-    foreach wrangler:channels(#{channel_tags}).reverse().tail() setting(chan)
+    foreach wrangler:channels(channel_tags).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
 }
