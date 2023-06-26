@@ -95,6 +95,7 @@ e.x. guesses
   width: 800px; max-width: 80%; max-height: 80%;
   border: 1px solid black; border-radius: 10px;
   transition: 300ms ease-in-out;
+  overflow-y: scroll;
 }
 #modal.active {
   transform: translate(-50%,-50%) scale(1);
