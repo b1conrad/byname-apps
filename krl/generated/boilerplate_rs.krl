@@ -6,6 +6,7 @@ ruleset boilerplate_rs {
     shares main_url, boilerplate
   }
   global {
+    channel_tags = ["boilerplates"]
     event_domain = "boilerplate_rs"
     event_url = function(event_type,event_id){
       eid = event_id || "none"
@@ -29,7 +30,7 @@ ruleset boilerplate_rs {
     select when wrangler ruleset_installed where event:attr("rids") >< meta:rid
     every {
       wrangler:createChannel(
-        ["boilerplates"],
+        channel_tags,
         {"allow":[{"domain":event_domain,"name":"*"}],"deny":[]},
         {"allow":[{"rid":meta:rid,"name":"*"}],"deny":[]}
       )
@@ -40,7 +41,7 @@ ruleset boilerplate_rs {
   }
   rule keepChannelsClean {
     select when boilerplate_rs factory_reset
-    foreach wrangler:channels(["boilerplates"]).reverse().tail() setting(chan)
+    foreach wrangler:channels(channel_tags).reverse().tail() setting(chan)
     wrangler:deleteChannel(chan.get("id"))
   }
 }
