@@ -55,8 +55,9 @@ You have a child pico which hosts apps from a repository that it maintains.
       + html:footer()
     }
     app_url = function(rid){
+      omit_main = function(s){s != "main_url"}
       rsMeta = wrangler:rulesetMeta(rid)
-      home = rsMeta.get("shares").head() + ".html"
+      home = rsMeta.get("shares").filter(omit_main).head() + ".html"
       tags = rid == "byu.hr.record" => "record_audio" |
              rid == "byu.hr.manage_apps" => "manage_apps" |
              rsMeta.get("name")
