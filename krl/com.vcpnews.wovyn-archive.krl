@@ -91,7 +91,13 @@ To <input name="email" value="#{ent:email || ""}">
       date re#^(202\d-\d\d-\d\d)$# setting(date)
     pre {
       subject = <<ByName: #{meta:rid}: #{date}>>
-      descr = sensors:export_csv()
+      all_lines = sensors:export_csv().split(LF)
+      today = all_lines[all_lines.length()].split(" ").head()
+      before_today = function(entry,index){
+        index == 0        // keep header line
+        || entry < today  // and entries before today
+      }
+      descr = all_lines.filter(before_today).join(LF)
     }
     if ent:email then
       email:send_text(ent:email,subject,descr) setting(response)
