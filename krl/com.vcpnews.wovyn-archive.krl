@@ -92,7 +92,7 @@ To <input name="email" value="#{ent:email || ""}">
     pre {
       subject = <<ByName: #{meta:rid}: #{date}>>
       all_lines = sensors:export_csv().split(LF)
-      today = all_lines[all_lines.length()].split(" ").head()
+      today = all_lines[all_lines.length()-1].split(" ").head()
       before_today = function(entry,index){
         index == 0        // keep header line
         || entry < today  // and entries before today
