@@ -132,7 +132,7 @@ ruleset com.vcpnews.ruleset {
 </tr>
 <tr>
 <td>Config</td>
-<td>meta:rulesetConfig.encode()</td>
+<td>#{meta:rulesetConfig.encode()}</td>
 </tr>
 <tr>
 <td>Source code</td>
